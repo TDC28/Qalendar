@@ -1,6 +1,6 @@
 # qCalendar
 
-This project is a calendar builder...
+A calendar that is optimized using DWave's quantum systems.
 
 # Installation
 
