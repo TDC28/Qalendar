@@ -48,3 +48,18 @@ class Day:
         get_timeslots(self) produces all the valid timeslots in the day.
         """
         return self._timeslots.keys()
+
+    def get_next_time(self, time):
+        """
+        blablabla docstring
+        """
+        hours = time // 100
+        minutes = time % 100 + self._time_step
+
+        if minutes >= 60:
+            minutes -= 60
+            hours += 1
+
+        return (hours * 100 + minutes) % 2400
+
+

@@ -36,4 +36,6 @@ if __name__ == "__main__":
     week[5].book_timeslot("MATH 235", 1045)
     week[5].book_timeslot("MATH 235", 1100)
 
+    print(week[1].get_next_time(2345))
+
     print(week)

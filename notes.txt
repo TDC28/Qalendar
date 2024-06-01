@@ -1,0 +1,14 @@
+Figure out a way to make it preferable to keep doing the same thing constantly
+i.e. dont do 5 minutes of physics then 5 minutes of math - Try stuff (Quadratic bias)
+
+Setting priority for certain topics (CHEM is hard) (Linear bias)
+
+Ask how many session to user
+
+Limit the time for each subject - user shoudl be able to specify
+
+Set preferences of time (night, after 12:00, within 4-8 pm, etc) 
+
+Option to add breaks between events
+
+End goal - Possibly be able to say: "I don't like this, I want it sooner" and move it sooner
