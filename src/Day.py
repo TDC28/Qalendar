@@ -2,6 +2,7 @@ class Day:
     """
     Represents a single day divided into timeslots.
     """
+
     def __init__(self, time_step: int) -> None:
         self._timeslots = {}
         self._time_step = time_step
@@ -19,8 +20,16 @@ class Day:
             minutes_str = str(minutes) if len(str(minutes)) == 2 else "0" + str(minutes)
             hour = time // 100
             hour_str = str(hour) if len(str(hour)) == 2 else "0" + str(hour)
-            print_msg += (
-                hour_str + ":" + minutes_str + "  -  " + self._timeslots[time] + "\n"
+            print_msg = (
+                print_msg
+                + hour_str
+                + ":"
+                + minutes_str
+                + "  -  "
+                + self._timeslots[time]
+                + "\n"
+                if self._timeslots[time] != "Empty" and self._timeslots[time] != "Sleep"
+                else print_msg
             )
 
         return print_msg
