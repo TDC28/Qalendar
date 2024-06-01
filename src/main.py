@@ -2,7 +2,13 @@
 
 from Week import Week
 
-my_week = Week()
+my_week = Week(15)
 
-my_week.days[0].set_unavailable_hours(0, 830)
-print(my_week.days[0])
+# Booking timeslots
+for i in range(7):
+    for time in my_week[i].get_timeslots():
+        if 0 <= time < 830:
+            my_week[i].book_timeslot("Sleep", time)
+
+print(my_week)
+help(my_week[0])

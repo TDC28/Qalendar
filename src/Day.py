@@ -1,41 +1,41 @@
-from functions import get_next_time
-
 class Day:
+    """
+    Represents a single day divided into timeslots.
+    """
     def __init__(self, time_step: int) -> None:
-        time_step = 15 # For now
-        self.time_slots = {}
-        self.time_step = time_step
+        self._timeslots = {}
+        self._time_step = time_step
 
-        for i in range(24 * (60 // time_step)):
+        for i in range(int(24 * (60 / time_step))):
             hour = ((i * time_step) // 60) * 100
             minutes = (i * time_step) % 60
             time = hour + minutes  # Time of form HHMM. Example 13:27 will be 1327
-            self.time_slots[time] = "Emtpy"
+            self._timeslots[time] = "Empty"
 
     def __repr__(self) -> str:
         print_msg = ""
-        for time in self.time_slots:
-            minutes = (time % 100) % 60
+        for time in self._timeslots:
+            minutes = time % 100
             minutes_str = str(minutes) if len(str(minutes)) == 2 else "0" + str(minutes)
             hour = time // 100
             hour_str = str(hour) if len(str(hour)) == 2 else "0" + str(hour)
-            print_msg += (hour_str + ":" + minutes_str + "  -  " + self.time_slots[time] + "\n")
+            print_msg += (
+                hour_str + ":" + minutes_str + "  -  " + self._timeslots[time] + "\n"
+            )
 
         return print_msg
 
-
-    def set_unavailable_hours(self, start: int, end: int) -> None:
+    def book_timeslot(self, activity: str, timeslot: int) -> None:
         """
-        set_unavailable_hours(self, start, end) removes time slots from self.time_slots where
-            user specifies.
+        book_time_slot(self, activity, timeslot) books calendar at time 'time_slot' for
+            the given activity 'activity'.
+        Requires: timeslot is a valid timeslot in the calendar
         """
-        time = start
-
-        while time < end:
-            self.time_slots.pop(time)
-            time = get_next_time(time) 
-
+        self._timeslots[timeslot] = activity
         return None
 
-
-
+    def get_timeslots(self):
+        """
+        get_timeslots(self) produces all the valid timeslots in the day.
+        """
+        return self._timeslots.keys()
