@@ -9,8 +9,8 @@ from dwave.system import LeapHybridDQMSampler
 # TODO: Define functions that add constraints to the DQM
 
 def get_sampler():
-    sampler = ExactDQMSolver() # QPU
-    # sampler = LeapHybridDQMSampler() # CPU
+    sampler = ExactDQMSolver() # CPU
+    # sampler = LeapHybridDQMSampler() # QPU
 
     return sampler
 
