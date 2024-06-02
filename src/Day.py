@@ -49,6 +49,12 @@ class Day:
         """
         return self._timeslots.keys()
 
+    def get_activity(self, time: int):
+        """
+        get_sctivity(self, time) produces the activity at time 'time'
+        """
+        return self._timeslots[time]
+
     def get_next_time(self, time):
         """
         blablabla docstring
