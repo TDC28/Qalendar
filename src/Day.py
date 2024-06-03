@@ -34,6 +34,13 @@ class Day:
 
         return print_msg
 
+    @property
+    def time_step(self) -> int:
+        """
+        get_time_step() produces the time step of self
+        """
+        return self._time_step
+
     def book_timeslot(self, activity: str, timeslot: int) -> None:
         """
         book_time_slot(self, activity, timeslot) books calendar at time 'time_slot' for
@@ -41,11 +48,11 @@ class Day:
         Requires: timeslot is a valid timeslot in the calendar
         """
         self._timeslots[timeslot] = activity
-        return None
+       return None
 
     def add_activity(self, activity: str, start: int, end: int) -> None:
         """
-        add_activityself, activity, start, end) books 'activity' on multiple timeslots in
+        add_activity(activity, start, end) books 'activity' on multiple timeslots in
             self from 'start' to 'end'.
         """
         for time in self._timeslots:
@@ -54,20 +61,33 @@ class Day:
 
         return None
 
+    def get_available_timeslots(self) -> set[int]:
+        """
+        get_available_timeslots() produces all the timeslots where no activity is currently
+            booked.
+        """
+        timeslots = self._timeslots.keys()
+        available_timeslots = set()
+
+        for timeslot in timeslots:
+            if self._timeslots[timeslot] == "Empty":
+                available_timeslots.add(timeslot)
+
+        return available_timeslots
 
     def get_timeslots(self):
         """
-        get_timeslots(self) produces all the valid timeslots in the day.
+        get_timeslots() produces all the valid timeslots in the day.
         """
         return self._timeslots.keys()
 
     def get_activity(self, time: int):
         """
-        get_sctivity(self, time) produces the activity at time 'time'
+        get_sctivity(time) produces the activity at time 'time'
         """
         return self._timeslots[time]
 
-    def get_next_time(self, time):
+    def get_next_time(self, time: int) -> int:
         """
         blablabla docstring
         """
@@ -79,5 +99,3 @@ class Day:
             hours += 1
 
         return (hours * 100 + minutes) % 2400
-
-

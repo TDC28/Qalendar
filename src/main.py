@@ -4,10 +4,6 @@ from Week import Week
 from dimod import DiscreteQuadraticModel, ExactDQMSolver
 from dwave.system import LeapHybridDQMSampler
 
-# TODO: Define functions that initialize week and DQM
-# TODO: Define a "Good" calendar/how do we build an objective function for a calendar?
-# TODO: Define functions that add constraints to the DQM
-
 def get_sampler():
     sampler = ExactDQMSolver() # CPU
     # sampler = LeapHybridDQMSampler() # QPU
