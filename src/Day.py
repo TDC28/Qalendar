@@ -43,6 +43,18 @@ class Day:
         self._timeslots[timeslot] = activity
         return None
 
+    def add_activity(self, activity: str, start: int, end: int) -> None:
+        """
+        add_activityself, activity, start, end) books 'activity' on multiple timeslots in
+            self from 'start' to 'end'.
+        """
+        for time in self._timeslots:
+            if start <= time < end:
+                self._timeslots[time] = activity
+
+        return None
+
+
     def get_timeslots(self):
         """
         get_timeslots(self) produces all the valid timeslots in the day.
