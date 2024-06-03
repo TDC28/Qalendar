@@ -48,7 +48,7 @@ class Day:
         Requires: timeslot is a valid timeslot in the calendar
         """
         self._timeslots[timeslot] = activity
-       return None
+        return None
 
     def add_activity(self, activity: str, start: int, end: int) -> None:
         """
