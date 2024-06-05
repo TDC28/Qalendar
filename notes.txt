@@ -12,3 +12,20 @@ Set preferences of time (night, after 12:00, within 4-8 pm, etc)
 Option to add breaks between events
 
 End goal - Possibly be able to say: "I don't like this, I want it sooner" and move it sooner
+
+
+
+
+
+
+Useful Links:
+
+ExactDQMSolver doc: https://docs.ocean.dwavesys.com/en/stable/docs_dimod/reference/sampler_composites/samplers.html#exact-dqm-solver
+LeapHybrid doc: https://docs.ocean.dwavesys.com/en/latest/docs_system/reference/samplers.html#dwave.system.samplers.LeapHybridDQMSampler
+DQM Model: https://docs.ocean.dwavesys.com/en/latest/concepts/dqm.html#dqm-sdk
+DQM class: https://docs.ocean.dwavesys.com/en/latest/docs_dimod/reference/models.html#dimod.DiscreteQuadraticModel
+
+
+Map Colour example (DQM): https://docs.ocean.dwavesys.com/en/latest/examples/map_dqm.html#map-dqm
+Crop rotation example (DQM): https://github.com/dwave-examples/crop-rotation/blob/main/crop_rotation.py
+
