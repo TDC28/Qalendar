@@ -21,6 +21,11 @@ class Qalendar:
     def add_time_constraint(self, activity: str, total_time: int) -> None:
         """
         Adds a user specified time constraint to the DQM for a given activity
+
+        Parameters:
+            activity: The activity of choice to add a time constraint
+
+            total_time: The total wished reserved for this activity
         """
         assert activity in self.activities, "Activity not found in activities"
         terms = []
@@ -41,6 +46,11 @@ class Qalendar:
     def add_time_preference(self, activity: str, preference: str) -> None:
         """
         Adds a preference for morning/afternoon/evening for a given activity
+
+        Parameters:
+            activity: The activity of choice to add a time preference
+
+            preference: Choices of time preference (either Morning, Afternoon, or Evening)
         """
         assert activity in self.activities, "Activity not found in activities"
         activity_index = self.activities.index(activity) + 1
@@ -62,6 +72,9 @@ class Qalendar:
         return None
 
     def prepare_dqm(self):
+        """
+        Adds the variables to the DQM
+        """
         for day in range(7):
             for time in self[day].get_available_timeslots():
                 self.dqm.add_variable(len(self.activities) + 1, label=f"{day}_{time}")
