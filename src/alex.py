@@ -7,13 +7,14 @@ week = Week(time_step=15)
 
 # Add some stuff to the calendar
 week[0].add_activity("Sleep", 0, 800)
-week[0].add_activity("Breakfast", 800, 900)
+week[0].add_activity("Breakfast", 800, 1000)
 week[0].add_activity("Lunch", 1200, 1300)
 week[0].add_activity("Supper", 1700, 1800)
 week[0].add_activity("Leetcode", 1930, 2000)
 
 dqm = DiscreteQuadraticModel()
-activities = ["Math", "CS", "Physics", "Earth"]
+activities = ["Math", "CS", "Physics"]
+
 variables = {}
 
 for time in week[0].get_available_timeslots():
@@ -21,11 +22,17 @@ for time in week[0].get_available_timeslots():
         len(activities) + 1, label=f"0_{time}"
     )  # Labels of form "day_time"
 
-# I want 1 hour of each activity - This block will eventually need to be implemented into a function because this will be very important
+for time in week[0].get_available_timeslots():
+    if time >= 1800:
+        dqm.set_linear_case(f"0_{time}", case=2, bias=-5)
+
+
 for activity_index in range(len(activities)):
     terms = []
     for time in week[0].get_available_timeslots():
-        terms.append((f"0_{time}", activity_index + 1, 1)) # the + 1 for activity index is to reserve 0 for empty. Example, an activity index of 2 would represent Physics and not CS. See line 47.
+        terms.append(
+            (f"0_{time}", activity_index + 1, 1)
+        )  # the + 1 for activity index is to reserve 0 for empty. Example, an activity index of 2 would represent Physics and not CS. See line 47.
 
     dqm.add_linear_equality_constraint(
         terms=terms,
@@ -34,19 +41,30 @@ for activity_index in range(len(activities)):
     )
 
 
+print(week[0].get_available_timeslots())
+
 sampler = LeapHybridDQMSampler()
 sampleset = sampler.sample_dqm(dqm)
 
-print(sampleset.first)
+# print(sampleset.first)
 
 for key in sampleset.first.sample.items():
+    # print(key)
     time = int(key[0][2:])
-    activity = int(key[1]) # if activity = 0, leave timeslot empty
+    activity = int(key[1])  # if activity = 0, leave timeslot empty
 
     if activity != 0:
-        week[0].book_timeslot(activities[activity-1], time) # -1 to shift back to regular activities index. See line 28.
+        week[0].book_timeslot(
+            activities[activity - 1], time
+        )  # -1 to shift back to regular activities index. See line 28.
+
+# Add preference to do CS at night
+
 
 print(week[0])
+print(sampleset.first)
+
+print(sampleset)
 
 
 # for i in range(2):
