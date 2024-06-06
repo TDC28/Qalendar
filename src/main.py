@@ -38,15 +38,9 @@ calendar.add_time_constraint("Phys Homework", 10)
 # TODO: Implement this into a function in Qalendar
 sampleset = sampler.sample_dqm(calendar.dqm)
 
-# TODO: Implement this into a function in Qalendar
-# Translates DQM results into calendar
-for key in sampleset.first.sample.items():
-    time = int(key[0][2:])
-    day = int(key[0][0])
-    activity_id = int(key[1])
+# New function that processes results, may rename later but it does the job right now
+calendar.process_results(sampleset)
 
-    if activity_id != 0:
-        calendar[day].book_timeslot(calendar.activities[activity_id-1], time)
 
 print(sampleset.first)
 print(calendar)

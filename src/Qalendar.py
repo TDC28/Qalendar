@@ -79,3 +79,17 @@ class Qalendar:
             for time in self[day].get_available_timeslots():
                 self.dqm.add_variable(len(self.activities) + 1, label=f"{day}_{time}")
 
+    def process_results(self, sampleset):
+        """
+        Adds the events from the sampleset from running the DQM
+        """
+        for key in sampleset.first.sample.items():
+            time = int(key[0][2:])
+            day = int(key[0][0])
+            activity_id = int(key[1])
+        
+            if activity_id != 0:
+                self[day].book_timeslot(self.activities[activity_id-1], time)
+
+
+
