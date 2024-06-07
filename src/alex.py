@@ -1,88 +1,147 @@
-from dimod import DiscreteQuadraticModel
-from dwave.system import LeapHybridDQMSampler
-from Week import Week
+from dimod import ConstrainedQuadraticModel, BinaryQuadraticModel, Binary, quicksum
+from dwave.system import LeapHybridCQMSampler
+from Qalendar import Qalendar
 
-# One day example
-week = Week(time_step=15)
+week = Qalendar(15)
+sampler = LeapHybridCQMSampler()
 
-# Add some stuff to the calendar
-week[0].add_activity("Sleep", 0, 800)
-week[0].add_activity("Breakfast", 800, 1000)
-week[0].add_activity("Lunch", 1200, 1300)
-week[0].add_activity("Supper", 1700, 1800)
-week[0].add_activity("Leetcode", 1930, 2000)
+# Predefined activities
+predefined_activities = [
+    ("Sleep", 0, 800),
+    ("Breakfast", 800, 900),
+    ("Lunch", 1200, 1300),
+    ("Dinner", 1800, 1900),
+    ("Leetcode", 2000, 2045),
+]
 
-dqm = DiscreteQuadraticModel()
-activities = ["Math", "CS", "Physics"]
+# Add predefined activities for all days
+for day_id in range(7):
+    for activity, start, end in predefined_activities:
+        week[day_id].add_activity(activity, start, end)
 
-variables = {}
+# Other activities
+week[1].add_activity("Math Lecture", 1000, 1100)
+week[1].add_activity("CS Lecture", 1400, 1500)
+week[2].add_activity("Phys Lecture", 1400, 1600)
+week[3].add_activity("Math Lecture", 1000, 1100)
+week[3].add_activity("CS Lecture", 1400, 1500)
+week[4].add_activity("Phys Lecture", 1400, 1600)
+week[5].add_activity("Math Lecture", 1000, 1100)
+week[5].add_activity("CS Lecture", 1400, 1500)
 
-for time in week[0].get_available_timeslots():
-    variable = dqm.add_variable(
-        len(activities) + 1, label=f"0_{time}"
-    )  # Labels of form "day_time"
+# New activities to schedule
+activities = ["Math Homework", "CS Homework", "Phys Homework", "Bike", "Gym"]
 
-for time in week[0].get_available_timeslots():
-    if time >= 1800:
-        dqm.set_linear_case(f"0_{time}", case=2, bias=-5)
+x = {}
+cqm = ConstrainedQuadraticModel()
+obj = BinaryQuadraticModel(vartype="BINARY")
 
+# Initiating variables
+for day in range(7):
+    for time in week[day].get_available_timeslots():
+        for activity_id in range(len(activities)):
+            x[(f"{day}_{time}", activity_id)] = Binary(f"{day}_{time}_{activity_id}")
 
-for activity_index in range(len(activities)):
-    terms = []
-    for time in week[0].get_available_timeslots():
-        terms.append(
-            (f"0_{time}", activity_index + 1, 1)
-        )  # the + 1 for activity index is to reserve 0 for empty. Example, an activity index of 2 would represent Physics and not CS. See line 47.
+# Preferences
+for day in range(7):
+    for time in week[day].get_available_timeslots():
+        if 1200 <= time < 1800:
+            obj += -x[f"{day}_{time}", 1]  # CS afternoon
+        if 1800 <= time < 2400:
+            obj += -x[f"{day}_{time}", 3]  # Bike evening
 
-    dqm.add_linear_equality_constraint(
-        terms=terms,
-        lagrange_multiplier=2,
-        constant=-int(60 / week[0].time_step),
+cqm.set_objective(obj)
+
+# No double booking
+for day in range(7):
+    for time in week[day].get_available_timeslots():
+        cqm.add_constraint(
+            quicksum(
+                x[(f"{day}_{time}", activity_id)]
+                for activity_id in range(len(activities))
+            )
+            <= 1,
+            label=f"No double booking {day} {time}",
+        )
+
+time_constraints = {
+    "Math Homework": 7,
+    "CS Homework": 9,
+    "Phys Homework": 10,
+    "Bike": 5,
+    "Gym": 3,
+}
+
+for activity_id, (activity, time_constraint) in enumerate(time_constraints.items()):
+    cqm.add_constraint(
+        quicksum(
+            x[(f"{day}_{time}", activity_id)]
+            for day in range(7)
+            for time in week[day].get_available_timeslots()
+        )
+        == time_constraint * int(60 / week.time_step),
+        label=f"{activity} time constraint",
     )
 
-
-print(week[0].get_available_timeslots())
-
-sampler = LeapHybridDQMSampler()
-sampleset = sampler.sample_dqm(dqm)
-
-# print(sampleset.first)
-
-for key in sampleset.first.sample.items():
-    # print(key)
-    time = int(key[0][2:])
-    activity = int(key[1])  # if activity = 0, leave timeslot empty
-
-    if activity != 0:
-        week[0].book_timeslot(
-            activities[activity - 1], time
-        )  # -1 to shift back to regular activities index. See line 28.
-
-# Add preference to do CS at night
+sampleset = sampler.sample_cqm(cqm)
 
 
-print(week[0])
-print(sampleset.first)
+def fill_calendar(sampleset):
+    keys = [key for key, value in sampleset.first.sample.items() if value == 1]
+
+    for key in keys:
+        day, time, activity = map(int, key.split("_"))
+        week[day].book_timeslot(activities[activity], time)
+
 
 print(sampleset)
+fill_calendar(sampleset)
+print(week)
 
-
-# for i in range(2):
-#     for time in week[i].get_timeslots():
-#         if 0 <= time < 1830:
-#             week[i].book_timeslot("Sleep", time)
+# from dwave.system import LeapHybridDQMSampler # Eventually this should move in with the main class maybe
+# from Qalendar import Qalendar
 #
-# for i in range(2):
-#     for time in week[i].get_timeslots():
-#         if week[i].get_activity(time) == "Empty":
-#             _ = dqm.add_variable(len(activities), label=f"{i}_{time}")
+# sampler = LeapHybridDQMSampler()
+# calendar = Qalendar(15)
 #
-# dqm.set_quadratic("0_1900", "0_1920", {(0, 2): -1.5}) # Corresponds to preference in doing Math at 19:00 and then Gym at 19:20
-# print(dqm.get_quadratic("0_1900", "0_1920", array=True))
+# # Book regular activities in the calendar manually
+# for day_id in range(7):
+#     calendar[day_id].add_activity("Sleep", 0, 800)
+#     calendar[day_id].add_activity("Breakfast", 800, 900)
+#     calendar[day_id].add_activity("Lunch", 1200, 1300)
+#     calendar[day_id].add_activity("Dinner", 1800, 1900)
+#     calendar[day_id].add_activity("Leetcode", 2000, 2045)
+#
+# calendar[1].add_activity("Math Lecture", 1000, 1100)
+# calendar[1].add_activity("CS Lecture", 1400, 1500)
+# calendar[2].add_activity("Phys Lecture", 1400, 1600)
+# calendar[3].add_activity("Math Lecture", 1000, 1100)
+# calendar[3].add_activity("CS Lecture", 1400, 1500)
+# calendar[4].add_activity("Phys Lecture", 1400, 1600)
+# calendar[5].add_activity("Math Lecture", 1000, 1100)
+# calendar[5].add_activity("CS Lecture", 1400, 1500)
+#
+# # TODO: Make this into a dict in Qalendar
+# activities = ["Math Homework", "CS Homework", "Phys Homework", "Bike", "Gym"]
+# calendar.activities = activities
+# calendar.prepare_dqm() # NOTE: Run this everytime after the manual calendar entries are specified
+#
+# calendar.add_time_preference("CS Homework", "Afternoon") # Preferably doing CS in the afternoons
+# calendar.add_time_preference("Bike", "Evening")
+#
+# calendar.add_time_constraint("Bike", 5) # 4 hours of bike
+# calendar.add_time_constraint("Gym", 3)
+# calendar.add_time_constraint("CS Homework", 9)
+# calendar.add_time_constraint("Math Homework", 7)
+# calendar.add_time_constraint("Phys Homework", 10)
+#
+# # TODO: Implement this into a function in Qalendar
+# sampleset = sampler.sample_dqm(calendar.dqm)
+#
+# # New function that processes results, may rename later but it does the job right now
+# calendar.process_results(sampleset)
 #
 #
-# print(dqm.variables)
-# print(week)
+# print(sampleset.first)
+# print(calendar)
 #
-# sampleset = sampler.sample_dqm(dqm)
-# print(sampleset)

@@ -21,24 +21,34 @@ calendar[4].add_activity("Phys Lecture", 1400, 1600)
 calendar[5].add_activity("Math Lecture", 1000, 1100)
 calendar[5].add_activity("CS Lecture", 1400, 1500)
 
-# TODO: Make this into a dict in Qalendar 
 activities = ["Math Homework", "CS Homework", "Phys Homework", "Bike", "Gym"]
 calendar.activities = activities
-calendar.prepare_dqm() # NOTE: Run this everytime after the manual calendar entries are specified
+calendar.prepare_dqm()
+
+# Penalizing small groups of activities - this is bad do not do this
+for activity_id in range(1, len(activities)+1):
+    for day_id in range(7):
+        timeslots = calendar[day_id].get_available_timeslots()
+
+        for time in timeslots:
+            next_time = calendar.get_next_time(time)
+            if next_time in timeslots:
+                calendar.dqm.set_quadratic_case(f"{day_id}_{time}", activity_id, f"{day_id}_{next_time}", activity_id, -2)
+
+            else:
+                calendar.dqm.set_linear_case(f"{day_id}_{time}", activity_id, 1)
 
 calendar.add_time_preference("CS Homework", "Afternoon") # Preferably doing CS in the afternoons
 calendar.add_time_preference("Bike", "Evening")
 
-calendar.add_time_constraint("Bike", 5) # 4 hours of bike
+calendar.add_time_constraint("Bike", 5) # 5 hours of bike
 calendar.add_time_constraint("Gym", 3)
 calendar.add_time_constraint("CS Homework", 9)
 calendar.add_time_constraint("Math Homework", 7)
 calendar.add_time_constraint("Phys Homework", 10)
 
-# TODO: Implement this into a function in Qalendar
 sampleset = sampler.sample_dqm(calendar.dqm)
 
-# New function that processes results, may rename later but it does the job right now
 calendar.process_results(sampleset)
 
 

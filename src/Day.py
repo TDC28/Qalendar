@@ -37,7 +37,7 @@ class Day:
     @property
     def time_step(self) -> int:
         """
-        get_time_step() produces the time step of self
+        get_time_step() produces the time step of self -- Useless now
         """
         return self._time_step
 
@@ -89,7 +89,7 @@ class Day:
 
     def get_next_time(self, time: int) -> int:
         """
-        blablabla docstring
+        Deprecated, moved to Qalendar
         """
         hours = time // 100
         minutes = time % 100 + self._time_step

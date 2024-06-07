@@ -37,7 +37,7 @@ class Qalendar:
 
         self.dqm.add_linear_equality_constraint(
             terms=terms,
-            lagrange_multiplier=5,
+            lagrange_multiplier=6,
             constant=-total_time * int(60 // self.time_step),
         )
 
@@ -90,6 +90,17 @@ class Qalendar:
         
             if activity_id != 0:
                 self[day].book_timeslot(self.activities[activity_id-1], time)
+
+    def get_next_time(self, time: int) -> int:
+        hours = time // 100
+        minutes = time % 100 + self.time_step
+
+        if minutes >= 60:
+            minutes -= 60
+            hours += 1
+
+        return (hours * 100 + minutes) % 2400
+
 
 
 
