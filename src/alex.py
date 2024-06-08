@@ -1,3 +1,4 @@
+from dimod import quicksum
 from Qalendar import Qalendar
 
 
@@ -22,7 +23,7 @@ week[5].add_activity("Math Lecture", 1000, 1100)
 week[5].add_activity("CS Lecture", 1400, 1500)
 
 activities = {
-    0: {"name": "Math Homework", "time_constraint": 7, "preference": None},
+    0: {"name": "Math Homework", "time_constraint": 8, "preference": None},
     1: {"name": "CS Homework", "time_constraint": 9, "preference": "Afternoon"},
     2: {"name": "Phys Homework", "time_constraint": 10, "preference": None},
     3: {"name": "Bike", "time_constraint": 5, "preference": "Evening"},
@@ -30,5 +31,31 @@ activities = {
 }
 
 week.optimize(activities)
+
+# 101 pattern
+for day in range(7):
+    for time in week[day].get_available_timeslots():
+        ntime = week.get_next_time(time) # Next time
+        nntime = week.get_next_time(ntime) # Next next time
+
+        if (
+            ntime not in week[day].get_available_timeslots()
+            or nntime not in week[day].get_available_timeslots()
+        ):
+            continue
+
+        for activity_id in activities:
+            week.cqm.add_constraint(
+                -3 * week.variables[(f"{day}_{ntime}", activity_id)]
+                + week.variables[(f"{day}_{time}"), activity_id]
+                * week.variables[(f"{day}_{ntime}"), activity_id]
+                + week.variables[(f"{day}_{ntime}"), activity_id]
+                * week.variables[(f"{day}_{nntime}"), activity_id]
+                + week.variables[(f"{day}_{time}"), activity_id]
+                * week.variables[(f"{day}_{nntime}"), activity_id]
+                <= 0,
+                label=f"101 penalized for {activity_id} at {day}_{time}",
+            )
+
 
 print(week)
