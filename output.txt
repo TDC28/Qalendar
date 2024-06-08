@@ -1,0 +1,296 @@
+----  Day 1  ---
+08:00  -  Breakfast
+08:15  -  Breakfast
+08:30  -  Breakfast
+08:45  -  Breakfast
+09:30  -  Math Homework
+10:15  -  Phys Homework
+11:00  -  Gym
+11:30  -  Math Homework
+12:00  -  Lunch
+12:15  -  Lunch
+12:30  -  Lunch
+12:45  -  Lunch
+13:30  -  CS Homework
+13:45  -  CS Homework
+14:00  -  Phys Homework
+14:30  -  CS Homework
+15:00  -  CS Homework
+15:15  -  Gym
+15:30  -  Phys Homework
+15:45  -  CS Homework
+16:15  -  Math Homework
+17:15  -  Bike
+17:45  -  Bike
+18:00  -  Dinner
+18:15  -  Dinner
+18:30  -  Dinner
+18:45  -  Dinner
+19:00  -  Phys Homework
+19:15  -  Bike
+19:30  -  Phys Homework
+20:00  -  Leetcode
+20:15  -  Leetcode
+20:30  -  Leetcode
+20:45  -  Bike
+21:00  -  Phys Homework
+21:15  -  Phys Homework
+23:15  -  Math Homework
+23:30  -  Phys Homework
+
+----  Day 2  ---
+08:00  -  Breakfast
+08:15  -  Breakfast
+08:30  -  Breakfast
+08:45  -  Breakfast
+09:15  -  Math Homework
+10:00  -  Math Lecture
+10:15  -  Math Lecture
+10:30  -  Math Lecture
+10:45  -  Math Lecture
+11:15  -  Phys Homework
+11:30  -  Math Homework
+12:00  -  Lunch
+12:15  -  Lunch
+12:30  -  Lunch
+12:45  -  Lunch
+13:15  -  CS Homework
+13:45  -  Phys Homework
+14:00  -  CS Lecture
+14:15  -  CS Lecture
+14:30  -  CS Lecture
+14:45  -  CS Lecture
+15:15  -  CS Homework
+16:30  -  CS Homework
+16:45  -  CS Homework
+17:15  -  Math Homework
+17:30  -  Bike
+17:45  -  Phys Homework
+18:00  -  Dinner
+18:15  -  Dinner
+18:30  -  Dinner
+18:45  -  Dinner
+19:00  -  Phys Homework
+19:15  -  Bike
+19:30  -  Math Homework
+20:00  -  Leetcode
+20:15  -  Leetcode
+20:30  -  Leetcode
+20:45  -  Bike
+22:00  -  Gym
+23:00  -  Gym
+
+----  Day 3  ---
+08:00  -  Breakfast
+08:15  -  Breakfast
+08:30  -  Breakfast
+08:45  -  Breakfast
+09:00  -  Math Homework
+10:45  -  Math Homework
+11:00  -  Phys Homework
+11:30  -  Gym
+12:00  -  Lunch
+12:15  -  Lunch
+12:30  -  Lunch
+12:45  -  Lunch
+13:15  -  CS Homework
+13:30  -  CS Homework
+14:00  -  Phys Lecture
+14:15  -  Phys Lecture
+14:30  -  Phys Lecture
+14:45  -  Phys Lecture
+15:00  -  Phys Lecture
+15:15  -  Phys Lecture
+15:30  -  Phys Lecture
+15:45  -  Phys Lecture
+16:00  -  CS Homework
+16:45  -  CS Homework
+17:00  -  Phys Homework
+17:45  -  Phys Homework
+18:00  -  Dinner
+18:15  -  Dinner
+18:30  -  Dinner
+18:45  -  Dinner
+19:00  -  Bike
+19:15  -  Bike
+19:45  -  Bike
+20:00  -  Leetcode
+20:15  -  Leetcode
+20:30  -  Leetcode
+21:00  -  Math Homework
+22:15  -  Phys Homework
+22:45  -  Math Homework
+23:30  -  Phys Homework
+
+----  Day 4  ---
+08:00  -  Breakfast
+08:15  -  Breakfast
+08:30  -  Breakfast
+08:45  -  Breakfast
+09:15  -  Phys Homework
+09:30  -  Gym
+10:00  -  Math Lecture
+10:15  -  Math Lecture
+10:30  -  Math Lecture
+10:45  -  Math Lecture
+11:45  -  Phys Homework
+12:00  -  Lunch
+12:15  -  Lunch
+12:30  -  Lunch
+12:45  -  Lunch
+13:15  -  CS Homework
+13:30  -  CS Homework
+14:00  -  CS Lecture
+14:15  -  CS Lecture
+14:30  -  CS Lecture
+14:45  -  CS Lecture
+15:00  -  CS Homework
+15:15  -  CS Homework
+15:30  -  CS Homework
+15:45  -  Phys Homework
+16:00  -  CS Homework
+16:45  -  CS Homework
+17:00  -  Bike
+17:30  -  Bike
+18:00  -  Dinner
+18:15  -  Dinner
+18:30  -  Dinner
+18:45  -  Dinner
+19:45  -  Phys Homework
+20:00  -  Leetcode
+20:15  -  Leetcode
+20:30  -  Leetcode
+20:45  -  Math Homework
+21:00  -  Phys Homework
+21:30  -  Phys Homework
+21:45  -  Phys Homework
+22:00  -  Phys Homework
+23:45  -  Phys Homework
+
+----  Day 5  ---
+08:00  -  Breakfast
+08:15  -  Breakfast
+08:30  -  Breakfast
+08:45  -  Breakfast
+09:00  -  Phys Homework
+09:15  -  Math Homework
+09:30  -  Math Homework
+11:30  -  Math Homework
+12:00  -  Lunch
+12:15  -  Lunch
+12:30  -  Lunch
+12:45  -  Lunch
+13:00  -  CS Homework
+13:30  -  Phys Homework
+14:00  -  Phys Lecture
+14:15  -  Phys Lecture
+14:30  -  Phys Lecture
+14:45  -  Phys Lecture
+15:00  -  Phys Lecture
+15:15  -  Phys Lecture
+15:30  -  Phys Lecture
+15:45  -  Phys Lecture
+16:00  -  Math Homework
+16:45  -  CS Homework
+17:15  -  Bike
+17:45  -  Bike
+18:00  -  Dinner
+18:15  -  Dinner
+18:30  -  Dinner
+18:45  -  Dinner
+19:00  -  Bike
+19:15  -  Bike
+20:00  -  Leetcode
+20:15  -  Leetcode
+20:30  -  Leetcode
+20:45  -  Bike
+21:45  -  Math Homework
+22:15  -  Math Homework
+22:45  -  Gym
+
+----  Day 6  ---
+08:00  -  Breakfast
+08:15  -  Breakfast
+08:30  -  Breakfast
+08:45  -  Breakfast
+09:00  -  Phys Homework
+09:30  -  Phys Homework
+10:00  -  Math Lecture
+10:15  -  Math Lecture
+10:30  -  Math Lecture
+10:45  -  Math Lecture
+11:00  -  Phys Homework
+11:30  -  Math Homework
+12:00  -  Lunch
+12:15  -  Lunch
+12:30  -  Lunch
+12:45  -  Lunch
+13:00  -  CS Homework
+13:15  -  CS Homework
+13:45  -  CS Homework
+14:00  -  CS Lecture
+14:15  -  CS Lecture
+14:30  -  CS Lecture
+14:45  -  CS Lecture
+15:00  -  CS Homework
+15:15  -  CS Homework
+17:15  -  Bike
+18:00  -  Dinner
+18:15  -  Dinner
+18:30  -  Dinner
+18:45  -  Dinner
+19:00  -  Bike
+20:00  -  Leetcode
+20:15  -  Leetcode
+20:30  -  Leetcode
+20:45  -  Math Homework
+21:15  -  Phys Homework
+21:45  -  Gym
+22:00  -  Math Homework
+22:15  -  Phys Homework
+22:30  -  Math Homework
+23:15  -  Math Homework
+23:30  -  Phys Homework
+
+----  Day 7  ---
+08:00  -  Breakfast
+08:15  -  Breakfast
+08:30  -  Breakfast
+08:45  -  Breakfast
+09:15  -  Phys Homework
+10:00  -  Phys Homework
+10:15  -  Gym
+10:45  -  Math Homework
+12:00  -  Lunch
+12:15  -  Lunch
+12:30  -  Lunch
+12:45  -  Lunch
+13:00  -  CS Homework
+13:15  -  Math Homework
+13:30  -  CS Homework
+13:45  -  Gym
+14:15  -  CS Homework
+14:30  -  CS Homework
+15:15  -  CS Homework
+15:30  -  CS Homework
+15:45  -  CS Homework
+16:00  -  Phys Homework
+16:30  -  CS Homework
+16:45  -  CS Homework
+17:00  -  Phys Homework
+17:45  -  Bike
+18:00  -  Dinner
+18:15  -  Dinner
+18:30  -  Dinner
+18:45  -  Dinner
+19:45  -  Gym
+20:00  -  Leetcode
+20:15  -  Leetcode
+20:30  -  Leetcode
+20:45  -  Phys Homework
+21:00  -  Math Homework
+22:15  -  Phys Homework
+23:00  -  Gym
+23:15  -  Math Homework
+
+
