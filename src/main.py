@@ -1,3 +1,5 @@
+# NOTE: THIS CODE IS BROKEN
+
 from dwave.system import LeapHybridDQMSampler # Eventually this should move in with the main class maybe
 from Qalendar import Qalendar
 
