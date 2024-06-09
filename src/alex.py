@@ -1,4 +1,3 @@
-from dimod import quicksum
 from Qalendar import Qalendar
 
 
@@ -29,33 +28,43 @@ activities = {
     3: {"name": "Bike", "time_constraint": 5, "preference": "Evening"},
     4: {"name": "Gym", "time_constraint": 3, "preference": None},
 }
+week.initialize_variables(activities)
 
+# 101 and 010 patterns
+# for day in range(7):
+#     for time in week[day].get_available_timeslots():
+#         ntime = week.get_next_time(time)  # Next time
+#         nntime = week.get_next_time(ntime)  # Next next time
+#
+#         if (
+#             ntime not in week[day].get_available_timeslots()
+#             or nntime not in week[day].get_available_timeslots()
+#         ):
+#             continue
+#
+#         # for activity_id in activities:
+#         #     week.cqm.add_constraint(
+#         #         -3 * week.variables[(f"{day}_{ntime}", activity_id)]
+#         #         + week.variables[(f"{day}_{time}", activity_id)]
+#         #         * week.variables[(f"{day}_{ntime}", activity_id)]
+#         #         + week.variables[(f"{day}_{ntime}", activity_id)]
+#         #         * week.variables[(f"{day}_{nntime}", activity_id)]
+#         #         + week.variables[(f"{day}_{time}", activity_id)]
+#         #         * week.variables[(f"{day}_{nntime}", activity_id)]
+#         #         <= 0,
+#         #         label=f"101 penalized for {activity_id} at {day}_{time}",
+#         #     )
+#
+#         for activity_id in activities:
+#             week.cqm.add_constraint(
+#                 week.variables[(f"{day}_{time}", activity_id)]
+#                 * week.variables[(f"{day}_{ntime}", activity_id)]
+#                 + week.variables[(f"{day}_{ntime}", activity_id)]
+#                 * week.variables[(f"{day}_{nntime}", activity_id)]
+#                 >= 1,
+#                 label=f"010 penalized for {activity_id} at {day}_{time}"
+#             )
+#
 week.optimize(activities)
-
-# 101 pattern
-for day in range(7):
-    for time in week[day].get_available_timeslots():
-        ntime = week.get_next_time(time) # Next time
-        nntime = week.get_next_time(ntime) # Next next time
-
-        if (
-            ntime not in week[day].get_available_timeslots()
-            or nntime not in week[day].get_available_timeslots()
-        ):
-            continue
-
-        for activity_id in activities:
-            week.cqm.add_constraint(
-                -3 * week.variables[(f"{day}_{ntime}", activity_id)]
-                + week.variables[(f"{day}_{time}"), activity_id]
-                * week.variables[(f"{day}_{ntime}"), activity_id]
-                + week.variables[(f"{day}_{ntime}"), activity_id]
-                * week.variables[(f"{day}_{nntime}"), activity_id]
-                + week.variables[(f"{day}_{time}"), activity_id]
-                * week.variables[(f"{day}_{nntime}"), activity_id]
-                <= 0,
-                label=f"101 penalized for {activity_id} at {day}_{time}",
-            )
-
 
 print(week)
