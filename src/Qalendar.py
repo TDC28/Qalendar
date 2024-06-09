@@ -67,23 +67,23 @@ class Qalendar:
                         obj += -self.variables[(f"{day}_{time}", activity_id)]
 
         # 110, 011, 111 patterns preferred NOTE: This works, but disabled for now
-        # for day in range(7):
-        #     for time in self[day].get_available_timeslots():
-        #         ntime = self.get_next_time(time)
-        #         nntime = self.get_next_time(ntime)
-        #
-        #         if (
-        #             ntime not in self[day].get_available_timeslots()
-        #             or nntime not in self[day].get_available_timeslots()
-        #         ):
-        #             continue
-        #         for activity_id in activities:
-        #             obj += (
-        #                 -self.variables[(f"{day}_{time}", activity_id)]
-        #                 * self.variables[(f"{day}_{ntime}", activity_id)]
-        #                 - self.variables[(f"{day}_{ntime}", activity_id)]
-        #                 * self.variables[(f"{day}_{nntime}", activity_id)]
-        #             )
+        for day in range(7):
+            for time in self[day].get_available_timeslots():
+                ntime = self.get_next_time(time)
+                nntime = self.get_next_time(ntime)
+
+                if (
+                    ntime not in self[day].get_available_timeslots()
+                    or nntime not in self[day].get_available_timeslots()
+                ):
+                    continue
+                for activity_id in activities:
+                    obj += (
+                        -self.variables[(f"{day}_{time}", activity_id)]
+                        * self.variables[(f"{day}_{ntime}", activity_id)]
+                        - self.variables[(f"{day}_{ntime}", activity_id)]
+                        * self.variables[(f"{day}_{nntime}", activity_id)]
+                    )
 
         self.cqm.set_objective(obj)
 
