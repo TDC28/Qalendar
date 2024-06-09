@@ -1,8 +1,6 @@
 # qCalendar
 
 A calendar that is optimized using DWave's quantum systems.
-> [!NOTE]
-> qCalendar is still a work in progress. Optimization of the calendar has not been implemented yet.
 
 # Installation
 
@@ -14,4 +12,4 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Authenticate your dwave account using `dwave setup --auth`
+Authenticate your dwave account using `dwave setup --auth`.
