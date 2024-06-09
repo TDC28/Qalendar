@@ -33,7 +33,6 @@ class Qalendar:
                         f"{day}_{time}_{activity_id}"
                     )
 
-
     def optimize(self, activities: dict):
         """
         Builds the CQM for the calendar, then runs the CQM and updates the calendar.
@@ -87,7 +86,8 @@ class Qalendar:
 
         self.cqm.set_objective(obj)
 
-        # No duplicate booking
+        # No duplicate booking and limit how long can be spent doing the same activity
+        k = 5 * int(60 / (4 * self.time_step))
         for day in range(7):
             for time in self[day].get_available_timeslots():
                 self.cqm.add_constraint(
@@ -98,6 +98,37 @@ class Qalendar:
                     <= 1,
                     label=f"No double booking {day} {time}",
                 )
+
+                add_constraints = True
+                i = 0
+                next_time = time
+
+                while i < k:
+                    if (
+                        self.get_next_time(next_time)
+                        not in self[day].get_available_timeslots()
+                    ):
+                        add_constraints = False
+                        break
+
+                    i += 1
+                    next_time = self.get_next_time(next_time)
+
+                if add_constraints:
+                    for activity_id in activities:
+                        self.cqm.add_constraint(
+                            quicksum(
+                                self.variables[
+                                    (
+                                        f"{day}_{self.get_ith_future_time(time, i)}",
+                                        activity_id,
+                                    )
+                                ]
+                                for i in range(k)
+                            )
+                            <= k - 1,
+                            label=f"too_many_consecutive,{activity_id},{day}_{time}",
+                        )
 
         # Time constraints
         for activity_id in activities:
@@ -133,3 +164,10 @@ class Qalendar:
             hours += 1
 
         return (hours * 100 + minutes) % 2400
+
+    def get_ith_future_time(self, time: int, i: int) -> int:
+        while i > 0:
+            time = self.get_next_time(time)
+            i -= 1
+
+        return time
