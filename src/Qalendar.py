@@ -145,7 +145,7 @@ class Qalendar:
 
         # Run the CQM and update calendar
         sampler = LeapHybridCQMSampler()
-        sampleset = sampler.sample_cqm(self.cqm)
+        sampleset = sampler.sample_cqm(self.cqm).filter(lambda d: d.is_feasible)
 
         keys = [key for key, value in sampleset.first.sample.items() if value == 1]
 
