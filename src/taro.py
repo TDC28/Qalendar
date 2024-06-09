@@ -46,11 +46,6 @@ week.optimize(activities)
 for day in range(7):
     for time in week[day].get_available_timeslots():
 
-
-        if (
-            time not in week[day].get_available_timeslots()
-        ):
-            continue
         add_contraints = True
         i = 0
         next_time = time
