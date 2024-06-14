@@ -1,4 +1,4 @@
-# qCalendar
+# Qalendar
 
 A calendar that is optimized using DWave's quantum systems.
 
