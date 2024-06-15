@@ -9,6 +9,18 @@ from dimod import (
 
 
 class Qalendar:
+    """
+    Qalendar is a class that represents a week and provides method to add your current schedule,
+    specify new activities wanted to be added to the calendar with time preferences, and methods to
+    optimize the calendar by sending a job to D-Wave's hybrid solvers.
+
+    Attributes:
+        week (Week): A Week object containing methods to add .
+        time_step (int): The time step used in the week.
+        cqm (ConstrainedQuadraticModel): The quadratic model to optimize.
+        variables (dict): Dictionary containing all the variables in the CQM.
+    """
+
     def __init__(self, time_step: int) -> None:
         self.week = Week(time_step)
         self.time_step = time_step
@@ -24,7 +36,7 @@ class Qalendar:
 
     def initialize_variables(self, activities):
         """
-        Initializes variables
+        Initializes variables for the CQM and stores them in variables dict.
         """
         for day in range(7):
             for time in self[day].get_available_timeslots():
@@ -37,7 +49,7 @@ class Qalendar:
         """
         Builds the CQM for the calendar, then runs the CQM and updates the calendar.
         """
-        # Initializing variables NOTE: Disabled for now
+        # Initializing variables
         # for day in range(7):
         #     for time in self[day].get_available_timeslots():
         #         for activity_id in activities:

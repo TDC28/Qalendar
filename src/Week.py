@@ -2,7 +2,7 @@ from Day import Day
 
 class Week:
     """
-    This class represents a week.
+    Represents a week.
     """
     def __init__(self, time_step: int = 15) -> None:
         self._days = [Day(time_step=time_step) for _ in range(7)]
