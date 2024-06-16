@@ -1,7 +1,10 @@
 from Qalendar import Qalendar
 from Day import Day
 from Week import Week
+
 import requests
+import os
+import sys
 
 #Define the base URL for the API (check myapp/urls.py)
 BASE_URL = 'http://127.0.0.1:8000/events/'
@@ -16,7 +19,12 @@ def fetch_events():
         print(f"Error fetching events: {e}")
         return []
     
-def main():
+def generate_schedule():
+    # Fetch events from the REST API
+    events = fetch_events()
+    
+    
+def generate_schedule():
     # Fetch events from the REST API
     events = fetch_events()
 
@@ -69,5 +77,9 @@ def main():
     qalendar.initialize_variables(activities)
     qalendar.optimize(activities)
 
+    # Return the string representation of the schedule
+    return repr(qalendar)
+
 if __name__ == "__main__":
-    main()
+    print("Generating schedule...")
+    print(generate_schedule())
