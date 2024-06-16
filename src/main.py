@@ -1,6 +1,6 @@
 from Qalendar import Qalendar
 
-week = Qalendar(time_step=15)
+week = Qalendar(time_step=10)
 
 for day_id in range(7):
     week[day_id].add_activity("Sleep", 0, 800)
