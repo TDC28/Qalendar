@@ -15,24 +15,38 @@ class Day:
 
     def __repr__(self) -> str:
         print_msg = ""
-        for time in self._timeslots:
-            minutes = time % 100
-            minutes_str = str(minutes) if len(str(minutes)) == 2 else "0" + str(minutes)
-            hour = time // 100
-            hour_str = str(hour) if len(str(hour)) == 2 else "0" + str(hour)
-            print_msg = (
-                print_msg
-                + hour_str
-                + ":"
-                + minutes_str
-                + "  -  "
-                + self._timeslots[time]
-                + "\n"
-                if self._timeslots[time] != "Empty" and self._timeslots[time] != "Sleep"
-                else print_msg
-            )
+        prev_activity = None
+        start_time = None
+
+        sorted_times = sorted(self._timeslots.keys())
+        for time in sorted_times:
+            current_activity = self._timeslots[time]
+            if current_activity != prev_activity:
+                if prev_activity and prev_activity != "Empty":
+                    print_msg += f"{self.format_time(start_time)} - {self.format_time(prev_time + self._time_step)} ---> {prev_activity}\n"
+
+                if current_activity != "Empty":
+                    start_time = time
+            prev_activity = current_activity
+            prev_time = time
+
+        if prev_activity and prev_activity != "Empty":
+            print_msg += f"{self.format_time(start_time)} - {self.format_time(prev_time + self._time_step)} ---> {prev_activity}\n"
 
         return print_msg
+
+    def format_time(self, time: int):
+        minutes = time % 100
+        hour = time // 100
+            
+        if minutes >= 60:
+            minutes -= 60
+            hour += 1
+
+        minutes_str = str(minutes).zfill(2)
+        hour_str = str(hour).zfill(2)
+        return f"{hour_str}:{minutes_str}"
+
 
     def book_timeslot(self, activity: str, timeslot: int) -> None:
         """

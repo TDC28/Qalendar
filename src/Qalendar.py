@@ -10,8 +10,8 @@ from dimod import (
 
 class Qalendar:
     """
-    Qalendar is a class that represents a week and provides method to add your current schedule,
-    specify new activities wanted to be added to the calendar with time preferences, and methods to
+    Qalendar is a class that represents a week and provides methods to add your current schedule,
+    specify new appointments wanted to be added to the calendar with time preferences, and methods to
     optimize the calendar by sending a job to D-Wave's hybrid solvers.
 
     Attributes:
@@ -34,7 +34,7 @@ class Qalendar:
     def __getitem__(self, key):
         return self.week[key]
 
-    def initialize_variables(self, activities):
+    def initialize_variables(self, activities: dict):
         """
         Initializes variables for the CQM and stores them in variables dict.
         """
@@ -77,7 +77,7 @@ class Qalendar:
                     if choices[preference][0] <= time < choices[preference][1]:
                         obj += -self.variables[(f"{day}_{time}", activity_id)]
 
-        # 110, 011, 111 patterns preferred NOTE: This works, but disabled for now
+        # 110, 011, 111 patterns preferred 
         for day in range(7):
             for time in self[day].get_available_timeslots():
                 ntime = self.get_next_time(time)
@@ -98,7 +98,8 @@ class Qalendar:
 
         self.cqm.set_objective(obj)
 
-        # No duplicate booking and limit how long can be spent doing the same activity
+        # No duplicate booking and limit how long can be spent doing the same activity  TODO: Make this customizable for each activity
+        # Maximum 5 hours
         k = 5 * int(60 / (4 * self.time_step))
         for day in range(7):
             for time in self[day].get_available_timeslots():
