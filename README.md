@@ -4,6 +4,9 @@ A calendar that is optimized using DWave's quantum systems.
 
 # Installation
 
+> [!NOTE]
+> A virtual environment is strongly reccomended
+
 cd into your desired folder then run the following into your terminal.
 
 ```bash
