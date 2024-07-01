@@ -29,6 +29,8 @@ activities = {
     5: {"name": "Earth Homework", "time_constraint": 7, "preference": None},
 }
 
-week.initialize_variables(activities)
-week.optimize(activities)
-print(repr(week))
+if __name__ == "__main__":
+
+    week.initialize_variables(activities)
+    week.optimize(activities)
+    print(repr(week))

@@ -5,6 +5,7 @@ from Week import Week
 import requests
 import os
 import sys
+import time
 
 #Define the base URL for the API (check myapp/urls.py)
 BASE_URL = 'http://127.0.0.1:8000/events/'
@@ -18,11 +19,6 @@ def fetch_events():
     except requests.exceptions.RequestException as e:
         print(f"Error fetching events: {e}")
         return []
-    
-def generate_schedule():
-    # Fetch events from the REST API
-    events = fetch_events()
-    
     
 def generate_schedule():
     # return "Hello, World!"
@@ -85,6 +81,12 @@ if __name__ == "__main__":
     # make sure to print schedule
     schedule = generate_schedule()
     print(schedule)
+
+
+
+
+    # events = fetch_events()
+    # print(events)
 
 
 
