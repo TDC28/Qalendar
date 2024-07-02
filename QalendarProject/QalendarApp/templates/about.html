@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+    About - Qalendar
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">About Qalendar</h1>
+        <p class="lead">Qalendar is an innovative calendar application powered by quantum computation, designed to help you optimize your schedule efficiently and effectively.</p>
+        <hr class="my-4">
+        <p>Our Aim</p>
+        <p>We wanted develop a smart calendar tailored towards students, with a strong aim towards optimizing time management for weekly tasks and reducing scheduling stress. By harnessing the cutting-edge capabilities of quantum computation, Qalendar is crafted to offer solutions to those who live in dynamic lifestyles</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'home' %}" role="button">Go to Home</a>
+    </div>
+{% endblock %}

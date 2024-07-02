@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Contact - Qalendar
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="display-4">Contact Us</h1>
+        <p class="lead">We'd love to hear from you! Please fill out the form below to get in touch with us.</p>
+
+        <p></strong>Don't send any messages yet!!! (Its not hooked up at the moment)</p>
+
+        <hr class="my-4">
+
+        {% if success %}
+            <div class="alert alert-success" role="alert">
+                Your message has been sent successfully. Thank you for contacting us!
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-6">
+                <form method="post" action="{% url 'contacts' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Your message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Our Contact Information</h3>
+                <p><strong>Address:</strong> 1234 Quantum Ave, Computation City, QC 12345</p>
+                <p><strong>Phone:</strong> (123) 456-7890</p>
+                <p><strong>Email:</strong> contact@qalendar.com</p>
+                <p><strong>Office Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

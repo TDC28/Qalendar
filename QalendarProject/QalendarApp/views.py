@@ -1,6 +1,8 @@
 from django.http import JsonResponse
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
 from django.http import JsonResponse
+from django.conf import settings
 from rest_framework import generics
 
 from .models import Activity, Event
@@ -15,6 +17,30 @@ import logging
 # Create your views here.
 def home(request):
     return render(request, "home.html")
+
+def about(request):
+    return render(request, 'about.html')
+
+def contacts(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        
+        # Compose the email
+        subject = f"Contact Form Submission from {name}"
+        email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
+        recipient_list = ['jsmith@uwaterloo.ca']  # Add the recipient email here
+        
+        # Send the email
+        send_mail(subject, email_message, settings.EMAIL_HOST_USER, recipient_list)
+        
+        return render(request, 'contacts.html', {'success': True})
+    
+    return render(request, 'contacts.html')
+
+
+
 
 
 

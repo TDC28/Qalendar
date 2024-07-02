@@ -5,6 +5,8 @@ from .views import EventListCreate, EventDetail, schedule_view, schedule_page, g
 
 urlpatterns  =  [
     path("", views.home, name="home"),
+    path('about/', views.about, name='about'),
+    path('contacts/', views.contacts, name='contacts'),
     path('events/', EventListCreate.as_view(), name='event-list-create'),
     path('events/<int:pk>/', EventDetail.as_view(), name='event-detail'),
     path('api/schedule/', schedule_view, name='schedule_view'),
