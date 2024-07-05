@@ -1,44 +1,51 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Schedule</title>
-</head>
-<body>
-    <h1>Weekly Schedule</h1>
-    <div id="schedule"></div>
+{% extends "base.html" %}
 
-    <script>
-        fetch('/api/schedule/')
-            .then(response => response.json())
-            .then(data => {
-                const scheduleDiv = document.getElementById('schedule');
-                let scheduleHtml = '';
-                data.forEach((event, index) => {
-                    scheduleHtml += `<h3>Event ${index + 1}</h3>`;
-                    scheduleHtml += `<p>Title: ${event.title}</p>`;
-                    scheduleHtml += `<p>Date: ${event.day}</p>`;
-                    scheduleHtml += `<p>Start time: ${event.start_time}</p>`;
-                    scheduleHtml += `<p>End time: ${event.end_time}</p>`;
-                });
-                scheduleDiv.innerHTML = scheduleHtml;
-            });
-    </script>
-</body>
-</html> -->
+{% block title %}
+    Qalendar Calendar Generator
+{% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Schedule</title>
-</head>
-<body>
-    <h1>Weekly Schedule</h1>
+{% block content %}
+<div class="container mt-5">
+    <button id="clear-button" class="btn btn-danger mb-3">Clear Events</button>
+    <h2>Add Event</h2>
+    <form id="add-event-form">
+        <p>
+            <strong>Note:</strong> The start and end times should be in 24-hour format without colons. For example, 9:00 AM
+            should be entered as 0900 and 5:30 PM should be entered as 1730.
+        </p>
+        <div class="form-group">
+            <label for="title">Event Title</label>
+            <input type="text" id="title" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="day">Day (1=Monday, 7=Sunday)</label>
+            <input type="number" id="day" class="form-control" min="0" max="6" required>
+        </div>
+        <div class="form-group">
+            <label for="start-time">Start Time (HHMM)</label>
+            <input type="text" id="start-time" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="end-time">End Time (HHMM)</label>
+            <input type="text" id="end-time" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Event</button>
+    </form>
+
+    <p>
+        <strong>Note:</strong> The schedule will be generated below based on the events you add here. You can add as many
+        events as you like, and the schedule will be generated based on the events you've added.
+    </p>
+
+    <h1>Generate Weekly Schedule</h1>
+    <button id="generate-button" class="btn btn-primary mb-3">Create Schedule</button>
     <pre id="schedule"></pre>
 
-    <script>
-        fetch('/api/generate_schedule/')
+</div>
+
+<script>
+    document.getElementById('generate-button').addEventListener('click', function() {
+        fetch('/generate_schedule/')
             .then(response => response.json())
             .then(data => {
                 if (data.schedule) {
@@ -46,7 +53,68 @@
                 } else {
                     document.getElementById('schedule').textContent = 'Error fetching schedule';
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('schedule').textContent = 'Error fetching schedule';
             });
-    </script>
-</body>
-</html>
+    });
+
+    document.getElementById('clear-button').addEventListener('click', function() {
+        fetch('/clear_events/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert('Events cleared successfully!');
+                document.getElementById('schedule').textContent = '';
+            } else {
+                alert('Error clearing events');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error clearing events');
+        });
+    });
+
+    document.getElementById('add-event-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const title = document.getElementById('title').value;
+        const day = document.getElementById('day').value;
+        const startTime = document.getElementById('start-time').value;
+        const endTime = document.getElementById('end-time').value;
+
+        fetch('/events/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                title: title,
+                day: parseInt(day),
+                start_time: startTime,
+                end_time: endTime
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.id) {
+                alert('Event added successfully!');
+                document.getElementById('add-event-form').reset();
+            } else {
+                alert('Error adding event');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error adding event');
+        });
+    });
+</script>
+{% endblock %}

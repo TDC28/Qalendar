@@ -11,5 +11,6 @@ urlpatterns  =  [
     path('events/<int:pk>/', EventDetail.as_view(), name='event-detail'),
     path('api/schedule/', schedule_view, name='schedule_view'),
     path('schedule/', schedule_page, name='schedule_page'),
-    path('api/generate_schedule/', generate_schedule_view, name='generate_schedule_view'),
+    path('generate_schedule/', generate_schedule_view, name='generate_schedule_view'),
+    path('clear_events/', views.clear_events_view, name='clear-events'),
 ]

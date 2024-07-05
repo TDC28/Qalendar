@@ -40,10 +40,6 @@ def contacts(request):
     return render(request, 'contacts.html')
 
 
-
-
-
-
 class EventListCreate(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -52,8 +48,18 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+
+def clear_events_view(request):
+    if request.method == 'POST':
+        Event.objects.all().delete()
+        return JsonResponse({'message': 'All events have been deleted.'})
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+def clear_events():
+    Event.objects.all().delete()
+
 def schedule_view(request):
-    events = Event.objects.all()  # Fetch events from the database
+    events = Event.objects.all()
     event_list = [{
         'title': event.title,
         'day': event.day,
