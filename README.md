@@ -5,7 +5,7 @@ A calendar that is optimized using DWave's quantum systems.
 # Installation
 
 > [!NOTE]
-> The frontend for Qalendar is not completed yet. To try Qalendar, change the branch from 'main' to 'test'
+> The frontend for Qalendar is still a work in progress. To try Qalendar from the terminal, change the branch from 'main' to 'test'
 
 To install qCalendar, clone the repository and run the following at the root of the project:
 
