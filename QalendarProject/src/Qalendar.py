@@ -69,7 +69,7 @@ class Qalendar:
         for activity_id in activities:
             preference = activities[activity_id]["preference"]
 
-            if preference is None:
+            if preference is None or "None":
                 continue
 
             for day in range(7):

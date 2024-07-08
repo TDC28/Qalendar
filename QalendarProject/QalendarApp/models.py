@@ -5,7 +5,7 @@ import string
 class Activity(models.Model):
     title = models.CharField(max_length=200)
     time_constraint = models.CharField(max_length=4)
-    preference = models.CharField(max_length=8, default="None")
+    preference = models.CharField(max_length=8, default="None", blank=True)
 
     def __str_(self):
         return self.title

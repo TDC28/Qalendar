@@ -21,7 +21,7 @@ week[5].add_activity("CS Lecture", 1400, 1500)
 
 
 activities = {
-    0: {"name": "Math Homework", "time_constraint": 8, "preference": None},
+    0: {"name": "Math Homework", "time_constraint": 8, "preference": "None"},
     1: {"name": "CS Homework", "time_constraint": 10, "preference": "Afternoon"},
     2: {"name": "Phys Homework", "time_constraint": 12, "preference": None},
     3: {"name": "Bike", "time_constraint": 6, "preference": "Evening"},

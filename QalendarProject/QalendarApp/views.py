@@ -6,7 +6,7 @@ from django.conf import settings
 from rest_framework import generics
 
 from .models import Activity, Event
-from .serializers import EventSerializer
+from .serializers import EventSerializer, ActivitySerializer
 
 import subprocess
 import os
@@ -39,7 +39,14 @@ def contacts(request):
     
     return render(request, 'contacts.html')
 
+class ActivityListCreate(generics.ListCreateAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
 
+class ActivityDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    
 class EventListCreate(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -57,6 +64,15 @@ def clear_events_view(request):
 
 def clear_events():
     Event.objects.all().delete()
+
+def clear_activities_view(request):
+    if request.method == 'POST':
+        Activity.objects.all().delete()
+        return JsonResponse({'message': 'All activities have been deleted.'})
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+def clear_activities():
+    Activity.objects.all().delete()
 
 def schedule_view(request):
     events = Event.objects.all()
