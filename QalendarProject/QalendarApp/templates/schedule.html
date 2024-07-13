@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Qalendar Calendar Generator
+    Calendar Generator
 {% endblock %}
 
 {% block content %}
@@ -56,6 +56,15 @@
 
     <h1>Generate Weekly Schedule</h1>
     <button id="generate-button" class="btn btn-primary mb-3">Create Schedule</button>
+
+    <!-- Loading screen -->
+    <div id="loading-screen" style="display: none;">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p>Generating schedule, please wait...</p>
+    </div>
+
     <pre id="schedule"></pre>
 
 </div>
@@ -63,9 +72,15 @@
 
 <script>
     document.getElementById('generate-button').addEventListener('click', function() {
+        // Show loading screen
+        document.getElementById('loading-screen').style.display = 'block';
         fetch('/generate_schedule/')
             .then(response => response.json())
             .then(data => {
+
+                // Hide the loading screen
+                document.getElementById('loading-screen').style.display = 'none';
+
                 if (data.schedule) {
                     document.getElementById('schedule').textContent = data.schedule;
                 } else {
@@ -73,6 +88,10 @@
                 }
             })
             .catch(error => {
+
+                // Hide the loading screen
+                document.getElementById('loading-screen').style.display = 'none';
+                
                 console.error('Error:', error);
                 document.getElementById('schedule').textContent = 'Error fetching schedule';
             });
