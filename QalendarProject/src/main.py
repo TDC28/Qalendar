@@ -91,17 +91,17 @@ def generate_schedule():
         qalendar[day_id].add_activity("Breakfast", 800, 830)
         qalendar[day_id].add_activity("Lunch", 1200, 1300)
         qalendar[day_id].add_activity("Dinner", 1800, 1900)
-        qalendar[day_id].add_activity("Leetcode", 2000, 2045)
+        # qalendar[day_id].add_activity("Leetcode", 2000, 2045)
 
 
-    activities = {
-        0: {"name": "Math Homework", "time_constraint": 8, "preference": None},
-        1: {"name": "CS Homework", "time_constraint": 10, "preference": "Afternoon"},
-        2: {"name": "Phys Homework", "time_constraint": 12, "preference": None},
-        3: {"name": "Bike", "time_constraint": 6, "preference": "Evening"},
-        4: {"name": "Gym", "time_constraint": 3, "preference": None},
-        5: {"name": "Earth Homework", "time_constraint": 7, "preference": None},
-    }    
+    # activities = {
+    #     0: {"name": "Math Homework", "time_constraint": 8, "preference": None},
+    #     1: {"name": "CS Homework", "time_constraint": 10, "preference": "Afternoon"},
+    #     2: {"name": "Phys Homework", "time_constraint": 12, "preference": None},
+    #     3: {"name": "Bike", "time_constraint": 6, "preference": "Evening"},
+    #     4: {"name": "Gym", "time_constraint": 3, "preference": None},
+    #     5: {"name": "Earth Homework", "time_constraint": 7, "preference": None},
+    # }    
    
 
     #Run optimizer

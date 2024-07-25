@@ -1,150 +1,99 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Calendar Generator
+  Schedule Generator
 {% endblock %}
 
 {% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+</style>
 <div class="container mt-5">
-    <button id="clear-event-button" class="btn btn-danger mb-3">Clear Events</button>
-    <button id="clear-activity-button" class="btn btn-danger mb-3">Clear Activities</button>
-    <h2>Add Event</h2>
-    <form id="add-event-form">
-        <p>
-            <strong>Note:</strong> The start and end times should be in 24-hour format without colons. For example, 9:00 AM
-            should be entered as 0900 and 5:30 PM should be entered as 1730.
-        </p>
-        <div class="form-group">
-            <label for="title">Event Title</label>
-            <input type="text" id="title" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="day">Day (0=Monday, 7=Sunday)</label>
-            <input type="number" id="day" class="form-control" min="0" max="6" required>
-        </div>
-        <div class="form-group">
-            <label for="start-time">Start Time (HHMM)</label>
-            <input type="text" id="start-time" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="end-time">End Time (HHMM)</label>
-            <input type="text" id="end-time" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Event</button>
-    </form>
+    <div class="row">
+        <!-- Left Column: Add Event and Add Activity Forms -->
+        <div class="col-md-3">
+            <h2>Add Event</h2>
+            <form id="add-event-form">
+                <div class="form-group">
+                    <label for="event-title">Title</label>
+                    <input type="text" class="form-control" id="event-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="event-day">Day</label>
+                    <input type="number" class="form-control" id="event-day" required>
+                </div>
+                <div class="form-group">
+                    <label for="start-time">Start Time</label>
+                    <input type="text" class="form-control" id="start-time" required>
+                </div>
+                <div class="form-group">
+                    <label for="end-time">End Time</label>
+                    <input type="text" class="form-control" id="end-time" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Event</button>
+            </form>
 
-    <h2>Add Activity</h2>
-    <form id="add-activity-form">
-        <div class="form-group">
-            <label for="activity-title">Activity Title</label>
-            <input type="text" id="activity-title" class="form-control" required>
+            <h2 class="mt-5">Add Activity</h2>
+            <form id="add-activity-form">
+                <div class="form-group">
+                    <label for="activity-title">Title</label>
+                    <input type="text" class="form-control" id="activity-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="time-constraint">Time Constraint</label>
+                    <input type="text" class="form-control" id="time-constraint" required>
+                </div>
+                <div class="form-group">
+                    <label for="preference">Preference</label>
+                    <input type="text" class="form-control" id="preference" placeholder="Optional">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Activity</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="time-constraint">Time Constraint (In interger hours)</label>
-            <input type="text" id="time-constraint" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="preference">Preference (Optional)</label>
-            <input type="text" id="preference" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Add Activity</button>
-    </form>
-    <p>
-        <strong>Note:</strong> The schedule will be generated below based on the events you add here. You can add as many
-        events as you like, and the schedule will be generated based on the events you've added.
-    </p>
 
-    <h1>Generate Weekly Schedule</h1>
-    <button id="generate-button" class="btn btn-primary mb-3">Create Schedule</button>
-
-    <!-- Loading screen -->
-    <div id="loading-screen" style="display: none;">
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+        <!-- Right Column: Generate Weekly Schedule -->
+        <div class="col-md-9">
+            <h2>Generate Weekly Schedule</h2>
+            <button id="generate-schedule-button" class="btn btn-success mb-3">Create Schedule</button>
+            <div id="loading" style="display: none;">Loading...</div>
+            <pre id="schedule"></pre>
+            <button id="clear-event-button" class="btn btn-danger mb-3">Clear Events</button>
+            <button id="clear-activity-button" class="btn btn-danger mb-3">Clear Activities</button>
+            <table>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>MON</th>
+                    <th>TUE</th>
+                    <th>WED</th>
+                    <th>THU</th>
+                    <th>FRI</th>
+                    <th>SAT</th>
+                    <th>SUN</th>
+                </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>        
         </div>
-        <p>Generating schedule, please wait...</p>
+
     </div>
-
-    <pre id="schedule"></pre>
-
 </div>
 
-
 <script>
-    document.getElementById('generate-button').addEventListener('click', function() {
-        // Show loading screen
-        document.getElementById('loading-screen').style.display = 'block';
-        fetch('/generate_schedule/')
-            .then(response => response.json())
-            .then(data => {
-
-                // Hide the loading screen
-                document.getElementById('loading-screen').style.display = 'none';
-
-                if (data.schedule) {
-                    document.getElementById('schedule').textContent = data.schedule;
-                } else {
-                    document.getElementById('schedule').textContent = 'Error fetching schedule';
-                }
-            })
-            .catch(error => {
-
-                // Hide the loading screen
-                document.getElementById('loading-screen').style.display = 'none';
-                
-                console.error('Error:', error);
-                document.getElementById('schedule').textContent = 'Error fetching schedule';
-            });
-    });
-
-    document.getElementById('clear-event-button').addEventListener('click', function() {
-        fetch('/clear_events/', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                alert('Events cleared successfully!');
-                document.getElementById('schedule').textContent = '';
-            } else {
-                alert('Error clearing events');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error clearing events');
-        });
-    });
-
-    document.getElementById('clear-activity-button').addEventListener('click', function() {
-        fetch('/clear_activities/', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                alert('Activities cleared successfully!');
-                document.getElementById('schedule').textContent = '';
-            } else {
-                alert('Error clearing activities');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error clearing activities');
-        });
-    });   
-
     document.getElementById('add-event-form').addEventListener('submit', function(event) {
         event.preventDefault();
-        const title = document.getElementById('title').value;
-        const day = document.getElementById('day').value;
+        const title = document.getElementById('event-title').value;
+        const day = document.getElementById('event-day').value;
         const startTime = document.getElementById('start-time').value;
         const endTime = document.getElementById('end-time').value;
 
@@ -156,7 +105,7 @@
             },
             body: JSON.stringify({
                 title: title,
-                day: parseInt(day),
+                day: day,
                 start_time: startTime,
                 end_time: endTime
             })
@@ -208,8 +157,128 @@
             alert('Error adding activity');
         });
     });
+
+    document.getElementById('generate-schedule-button').addEventListener('click', function() {
+        document.getElementById('loading').style.display = 'block';
+        fetch('/generate_schedule/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                if (data.schedule) {
+                    document.getElementById('schedule').textContent = data.schedule;
+                } else {
+                    document.getElementById('schedule').textContent = 'Error fetching schedule';
+                }
+            });
+    });
+
+    document.getElementById('clear-event-button').addEventListener('click', function() {
+        fetch('/clear_events/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert('Events cleared successfully!');
+                document.getElementById('schedule').textContent = '';
+            } else {
+                alert('Error clearing events');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error clearing events');
+        });
+    });
+
+    document.getElementById('clear-activity-button').addEventListener('click', function() {
+        fetch('/clear_activities/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert('Activities cleared successfully!');
+                document.getElementById('schedule').textContent = '';
+            } else {
+                alert('Error clearing activities');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error clearing activities');
+        });
+    });   
+
+
+
+
+// function generateTimeSlots(start, end, interval) {
+//   const timeSlots = [];
+//   let currentTime = new Date(start);
+//   const endTime = new Date(end);
+
+//   while (currentTime <= endTime) {
+//     const timeString = currentTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+//     timeSlots.push(
+//     {
+//         "time": timeString,
+//         "monday": "Meeting",
+//         "tuesday": "Lecture",
+//         "wednesday": "",
+//         "thursday": "Lab",
+//         "friday": "",
+//         "saturday": "",
+//         "sunday": ""
+//     });
+//     currentTime.setMinutes(currentTime.getMinutes() + interval);
+//   }
+
+//   return timeSlots;
+// }
+
+// const scheduleData = generateTimeSlots('8:00 AM', '1:00 PM', 30);
+
+    const scheduleData = [
+    {
+        "time": "8:00 AM",
+        "monday": "Meeting",
+        "tuesday": "Lecture",
+        "wednesday": "",
+        "thursday": "Lab",
+        "friday": "",
+        "saturday": "",
+        "sunday": ""
+    },
+];
+
+const tableBody = document.querySelector('tbody');
+
+scheduleData.forEach(slot => {
+  const row = document.createElement('tr');
+
+  // Shift the days by one, starting with Tuesday
+  const days = ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday'];
+
+  // Add the time cell
+  const timeCell = document.createElement('td');
+  timeCell.textContent = slot.time;
+  row.appendChild(timeCell);
+
+  // Add the day cells
+  days.forEach(day => {
+    const cell = document.createElement('td');
+    cell.textContent = slot[day];
+    row.appendChild(cell);
+  });
+
+  tableBody.appendChild(row);
+});
 </script>
 {% endblock %}
-
-
-

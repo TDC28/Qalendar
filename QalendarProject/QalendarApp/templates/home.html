@@ -6,4 +6,102 @@
 <p>Step 1: Add events to database using /events...      (yea its manual)</p>
 <p>Step 2: Generate schedule via gemerate schedule in nav bar</p>
 
+
+
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+</style>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th>MON</th>
+        <th>TUE</th>
+        <th>WED</th>
+        <th>THU</th>
+        <th>FRI</th>
+        <th>SAT</th>
+        <th>SUN</th>
+    </tr>
+    </thead>
+    <tbody>
+        </tbody>
+</table>
+</body>
+
+<script>
+function generateTimeSlots(start, end, interval) {
+  const timeSlots = [];
+  let currentTime = new Date(start);
+  const endTime = new Date(end);
+
+  while (currentTime <= endTime) {
+    const timeString = currentTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    timeSlots.push(
+    {
+        "time": timeString,
+        "monday": "Meeting",
+        "tuesday": "Lecture",
+        "wednesday": "",
+        "thursday": "Lab",
+        "friday": "",
+        "saturday": "",
+        "sunday": ""
+    });
+    currentTime.setMinutes(currentTime.getMinutes() + interval);
+  }
+
+  return timeSlots;
+}
+
+const scheduleData = generateTimeSlots('8:00 AM', '1:00 PM', 30);
+
+//     const scheduleData = [
+//     {
+//         "time": "8:00 AM",
+//         "monday": "Meeting",
+//         "tuesday": "Lecture",
+//         "wednesday": "",
+//         "thursday": "Lab",
+//         "friday": "",
+//         "saturday": "",
+//         "sunday": ""
+//     },
+//   // ... your schedule data
+// ];
+
+const tableBody = document.querySelector('tbody');
+
+scheduleData.forEach(slot => {
+  const row = document.createElement('tr');
+
+  // Shift the days by one, starting with Tuesday
+  const days = ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday'];
+
+  // Add the time cell
+  const timeCell = document.createElement('td');
+  timeCell.textContent = slot.time;
+  row.appendChild(timeCell);
+
+  // Add the day cells
+  days.forEach(day => {
+    const cell = document.createElement('td');
+    cell.textContent = slot[day];
+    row.appendChild(cell);
+  });
+
+  tableBody.appendChild(row);
+});
+</script>
 {% endblock %}

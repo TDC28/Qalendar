@@ -1,0 +1,22 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.navbar-brand img {
+    margin-right: 10px;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+#loading {
+    display: none;
+    font-size: 18px;
+    color: #007bff;
+}
