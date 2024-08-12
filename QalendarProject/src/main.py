@@ -8,8 +8,8 @@ import sys
 import time
 
 #Define the base URL for the API (check myapp/urls.py)
-BASE_URL_EVENTS = 'http://127.0.0.1:8000/events/'
-BASE_URL_ACTIVITIES = 'http://127.0.0.1:8000/activities/'
+BASE_URL_EVENTS = 'http://127.0.0.1:8000/api/events/'
+BASE_URL_ACTIVITIES = 'http://127.0.0.1:8000/api/activities/'
 
 def fetch_events():
     try:

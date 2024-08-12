@@ -97,7 +97,7 @@
         const startTime = document.getElementById('start-time').value;
         const endTime = document.getElementById('end-time').value;
 
-        fetch('/events/', {
+        fetch('/api/events/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -131,7 +131,7 @@
         const timeConstraint = document.getElementById('time-constraint').value;
         const preference = document.getElementById('preference').value || "None";
 
-        fetch('/activities/', {
+        fetch('/api/activities/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -160,7 +160,7 @@
 
     document.getElementById('generate-schedule-button').addEventListener('click', function() {
         document.getElementById('loading').style.display = 'block';
-        fetch('/generate_schedule/')
+        fetch('/api/generate_schedule/')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('loading').style.display = 'none';
@@ -244,18 +244,86 @@
 // }
 
 // const scheduleData = generateTimeSlots('8:00 AM', '1:00 PM', 30);
-
-    const scheduleData = [
+const scheduleData = [
     {
-        "time": "8:00 AM",
-        "monday": "Meeting",
-        "tuesday": "Lecture",
-        "wednesday": "",
-        "thursday": "Lab",
-        "friday": "",
-        "saturday": "",
-        "sunday": ""
+        "time": "1:00 AM",
+        "MON": "",
+        "TUE": "",
+        "WED": "",
+        "THU": "",
+        "FRI": "",
+        "SAT": "",
+        "SUN": ""
     },
+        {
+        "time": "2:00 AM",
+        },
+        {
+        "time": "3:00 AM",
+        },
+        {
+        "time": "4:00 AM",
+        },
+        {
+        "time": "5:00 AM",
+        },
+        {
+        "time": "6:00 AM",
+        },
+        {
+        "time": "7:00 AM",
+        },
+        {
+        "time": "8:00 AM",
+        },
+        {
+        "time": "9:00 AM",
+        },
+        {
+        "time": "10:00 AM",
+        },
+        {
+        "time": "11:00 AM",
+        },
+        {
+        "time": "12:00 PM",
+        },
+        {
+        "time": "1:00 PM",
+        },
+        {
+        "time": "2:00 PM",
+        },
+        {
+        "time": "3:00 PM",
+        },
+        {
+        "time": "4:00 PM",
+        },
+        {
+        "time": "5:00 PM",
+        },
+        {
+        "time": "6:00 PM",
+        },
+        {
+        "time": "7:00 PM",
+        },
+        {
+        "time": "8:00 PM",
+        },
+        {
+        "time": "9:00 PM",
+        },
+        {
+        "time": "10:00 PM",
+        },
+        {
+        "time": "11:00 PM",
+        },
+        {
+        "time": "12:00 AM",
+        }
 ];
 
 const tableBody = document.querySelector('tbody');
