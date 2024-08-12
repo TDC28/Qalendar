@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'QalendarApp',
-    'frontend.apps.FrontendConfig',
+#    'frontend.apps.FrontendConfig',
 ]
 
 MIDDLEWARE = [
