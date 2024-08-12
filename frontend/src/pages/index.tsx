@@ -1,7 +1,9 @@
-import Header from "@/components/header"
+import DefaultLayout from "@/layouts/default"
 
 export default function IndexPage() {
    return (
-      <Header />
+      <DefaultLayout>
+         <h1>This is the home page</h1>
+      </DefaultLayout>
    )
 }
