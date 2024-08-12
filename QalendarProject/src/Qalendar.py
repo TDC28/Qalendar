@@ -183,3 +183,13 @@ class Qalendar:
             i -= 1
 
         return time
+
+    def get_qalendar_data(self):
+        days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+        data = {day: [] for day in days}
+
+        for day_id in range(7):
+            for timeslot in self[day_id].get_timeslots():
+                data[days[day_id]].append(self[day_id].get_activity(timeslot))
+
+        return data
