@@ -32,7 +32,6 @@ def fetch_activities():
         return []
 
 def generate_schedule():
-    # return "Hello, World!"
     # Fetch events from the REST API
     events = fetch_events()
     activities = fetch_activities()
@@ -109,14 +108,17 @@ def generate_schedule():
     qalendar.initialize_variables(activities=activities_dict)
     qalendar.optimize(activities=activities_dict)
 
+    data = qalendar.get_qalendar_data()
+
     # Return the string representation of the schedule
     # return repr(qalendar)
-    return qalendar
+    return data
 
 if __name__ == "__main__":
     # make sure to print schedule
     schedule = generate_schedule()
-    print(schedule)
+    print(schedule['MON'])
+    print(len(schedule['MON']))
 
 
 
