@@ -1,85 +1,103 @@
 'use client'
 
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
+import React, { useEffect, useState } from 'react';
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
+import GenerateButton from './generateButton'; // Import the GenerateButton component
 
-type Day = 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
-
-// // Define the type for a row in the table
 interface Row {
-    key: string;
-    timeSlot: string;
-    MON?: string;
-    TUE?: string;
-    WED?: string;
-    THU?: string;
-    FRI?: string;
-    SAT?: string;
-    SUN?: string;
-  }
+    time: string;
+    [day: string]: string;
+}
 
-const scheduleData: Record<Day, string[]> = {
-    'MON': ['Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Breakfast', 'Breakfast', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Gym', 'Gym', 'Gym', 'Gym', 'Empty', 'Empty', 'Empty', 'Lunch', 'Lunch', 'Lunch', 'Lunch', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Gym', 'Gym', 'Gym', 'Gym', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Dinner', 'Dinner', 'Dinner', 'Dinner', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty'],
-    'TUE': ['Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Breakfast', 'Breakfast', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Lunch', 'Lunch', 'Lunch', 'Lunch', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Dinner', 'Dinner', 'Dinner', 'Dinner', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty'], 
-    'WED': ['Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Breakfast', 'Breakfast', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Lunch', 'Lunch', 'Lunch', 'Lunch', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Dinner', 'Dinner', 'Dinner', 'Dinner', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty'], 
-    'THU': ['Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Breakfast', 'Breakfast', 'Math', 'Math', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Lunch', 'Lunch', 'Lunch', 'Lunch', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Dinner', 'Dinner', 'Dinner', 'Dinner', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Gym', 'Gym', 'Gym', 'Gym', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty'], 
-    'FRI': ['Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Breakfast', 'Breakfast', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Lunch', 'Lunch', 'Lunch', 'Lunch', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Dinner', 'Dinner', 'Dinner', 'Dinner', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Gym', 'Gym', 'Gym', 'Gym', 'Empty', 'Empty', 'Empty', 'Empty'], 
-    'SAT': ['Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Breakfast', 'Breakfast', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Lunch', 'Lunch', 'Lunch', 'Lunch', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Gym', 'Gym', 'Gym', 'Gym', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Dinner', 'Dinner', 'Dinner', 'Dinner', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty'], 
-    'SUN': ['Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Sleep', 'Breakfast', 'Breakfast', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Lunch', 'Lunch', 'Lunch', 'Lunch', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'English', 'English', 'English', 'English', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Dinner', 'Dinner', 'Dinner', 'Dinner', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty']}
-
-
-// Create the days array
-const days: Day[] = Object.keys(scheduleData) as Day[];
-
-// Calculate the maximum length of activities
-const maxLength = Math.max(...days.map(day => scheduleData[day].length));
-
-
-// Generate time slots (15-minute intervals starting from 0:00 AM)
-const generateTimeSlots = () => {
-    const slots = [];
-    for (let i = 0; i < maxLength; i++) {
-      const hours = Math.floor(i / 4);
-      const minutes = (i % 4) * 15;
-      const time = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${hours < 12 ? 'AM' : 'PM'}`;
-      slots.push(time);
-    }
-    return slots;
-  };
-
-
-const timeSlots = generateTimeSlots();
-
-
-const rows: Row[] = Array.from({ length: maxLength }, (_, index) => {
-    const row: Row = { key: index.toString(), timeSlot: timeSlots[index] };
-    
-    // Replace 'Empty' with an empty string
-    days.forEach(day => {
-      const activity = scheduleData[day][index];
-      row[day] = activity === 'Empty' ? '' : activity;
+const ScheduleTable: React.FC = () => {
+    const [scheduleData, setScheduleData] = useState<{ [day: string]: string[] }>({
+        MON: [],
+        TUE: [],
+        WED: [],
+        THU: [],
+        FRI: [],
+        SAT: [],
+        SUN: [],
     });
-  
-    return row;
-  });
-  
-const columns = [
-{ key: 'timeSlot', label: 'Time Slot' }, // Add time slot column
-...days.map(day => ({ key: day, label: day.toUpperCase() }))
-];
-  
-export default function ScheduleTable() {
+
+    const fetchScheduleData = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/generate-schedule/');
+            const data = await response.json();
+
+            console.log('Fetched Schedule Data:', data.schedule); // Log the fetched data
+            setScheduleData(data.schedule);
+        } catch (error) {
+            console.error('Error fetching schedule data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchScheduleData(); // Fetch initial schedule data on component mount
+    }, []);
+
+    const generateTimeSlots = () => {
+        const slots = [];
+        for (let i = 0; i < 24; i++) {
+            for (let j = 0; j < 4; j++) {
+                const hour = i.toString().padStart(2, '0');
+                const minutes = (j * 15).toString().padStart(2, '0');
+                slots.push(`${hour}:${minutes}`);
+            }
+        }
+        return slots;
+    };
+
+    const timeSlots = generateTimeSlots();
+
+    // Calculate max length to handle cases where days might have different lengths of activities
+    const maxLength = Math.max(...Object.values(scheduleData).map(day => day.length));
+
+    // Updated logic for creating the rows
+    const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+    const rows: Row[] = Array.from({ length: maxLength }, (_, index) => {
+        const row: Row = { time: timeSlots[index] };
+
+        // Replace 'Empty' with an empty string
+        days.forEach(day => {
+            const activity = scheduleData[day][index];
+            row[day] = activity === 'Empty' ? '' : activity || '';
+        });
+
+        return row;
+    });
+
     return (
-      <Table aria-label="Schedule table with time slots">
-        <TableHeader columns={columns}>
-          {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-        </TableHeader>
-        <TableBody items={rows}>
-          {(item) => (
-            <TableRow key={item.key}>
-              {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+        <>
+            <GenerateButton onGenerate={fetchScheduleData} /> {/* Pass fetchScheduleData as the onGenerate prop */}
+            <Table aria-label="Schedule Table">
+                <TableHeader>
+                    <TableColumn>Time Slot</TableColumn>
+                    <TableColumn>Monday</TableColumn>
+                    <TableColumn>Tuesday</TableColumn>
+                    <TableColumn>Wednesday</TableColumn>
+                    <TableColumn>Thursday</TableColumn>
+                    <TableColumn>Friday</TableColumn>
+                    <TableColumn>Saturday</TableColumn>
+                    <TableColumn>Sunday</TableColumn>
+                </TableHeader>
+                <TableBody>
+                    {rows.map((row, rowIndex) => (
+                        <TableRow key={rowIndex}>
+                            <TableCell>{row.time}</TableCell>
+                            <TableCell>{row.MON}</TableCell>
+                            <TableCell>{row.TUE}</TableCell>
+                            <TableCell>{row.WED}</TableCell>
+                            <TableCell>{row.THU}</TableCell>
+                            <TableCell>{row.FRI}</TableCell>
+                            <TableCell>{row.SAT}</TableCell>
+                            <TableCell>{row.SUN}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </>
     );
-  }
+};
+
+export default ScheduleTable;

@@ -40,10 +40,12 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'QalendarApp',
+    'corsheaders',
 #    'frontend.apps.FrontendConfig',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,7 +131,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'QalendarApp', 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:1573"
+    'http://localhost:5173',
 ]
 
 

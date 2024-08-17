@@ -1,3 +1,4 @@
+import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -89,10 +90,6 @@ logging.basicConfig(level=logging.DEBUG)
 
 def generate_schedule_view(request):
     try:
-        # Print the Python executable and installed packages
-        logging.debug(f"Python executable: {sys.executable}")
-        logging.debug(f"Installed packages: {subprocess.run([sys.executable, '-m', 'pip', 'freeze'], capture_output=True, text=True).stdout}")
-        
         # Construct the path to main.py
         project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         main_script = os.path.join(project_root, 'src', 'main.py')
@@ -102,9 +99,6 @@ def generate_schedule_view(request):
         # Run the main.py script and capture its output
         result = subprocess.run([sys.executable, main_script], capture_output=True, text=True)
         
-        logging.debug(f"Result stdout: {result.stdout}")
-        logging.debug(f"Result stderr: {result.stderr}")
-        
         schedule_output = result.stdout
         
         if result.returncode != 0:
@@ -113,8 +107,24 @@ def generate_schedule_view(request):
         
         return JsonResponse({'schedule': schedule_output})
     except Exception as e:
-        logging.error(f"Error: {str(e)}")
         return JsonResponse({'error': str(e)})
+    
+
+# New version for React
+# Todo: Make generate_schedule usable for React
+def generate_schedule(request):
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    main_script = os.path.join(project_root, 'src', 'main.py')
+
+    result = subprocess.run([sys.executable, main_script], capture_output=True, text=True)
+    logging.debug(f"Running script")
+    # Assuming the script prints a valid JSON string
+    try:
+        schedule = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Failed to parse schedule data'}, status=500)
+    
+    return JsonResponse({'schedule': schedule})
 
 
 def schedule_page(request):
