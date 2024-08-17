@@ -117,8 +117,8 @@ def generate_schedule():
 if __name__ == "__main__":
     # make sure to print schedule
     schedule = generate_schedule()
-    print(schedule['MON'])
-    print(len(schedule['MON']))
+    print(schedule)
+    # print(len(schedule['MON']))
 
 
 
