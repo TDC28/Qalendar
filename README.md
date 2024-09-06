@@ -1,18 +1,44 @@
 # Qalendar
 
-A calendar that is optimized using DWave's quantum systems.
+A calendar application that is optimized using DWave's quantum systems.
 
 # Installation
 
-> [!NOTE]
-> The frontend for Qalendar is still a work in progress. To try Qalendar from the terminal, change the branch from 'main' to 'test'
+```bash
+git clone https://github.com/TDC28/Qalendar.git
+```
 
-To install qCalendar, clone the repository and run the following at the root of the project:
+> [!NOTE]
+> The frontend for Qalendar is still a work in progress. To try Qalendar from the terminal, change the branch from 'main' to 'test'.
+
+# Using Qalendar
+
+Using Qalendar requires you to run the backend and the frontend locally, since the project is not hosted (and likely never will be).
+
+- Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+- Backend
+
+> [!WARNING]
+> You should use a virtual environment for this project.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+cd QalendarProject
 pip install -r requirements.txt
 ```
 
-Authenticate your dwave account using `dwave setup --auth`.
+Setup D-Wave Ocean
+```bash
+dwave setup --auth
+dwave auth login
+```
+
+Run the backend
+```bash
+python manage.py runserver
+```
