@@ -1,14 +1,13 @@
 import DefaultLayout from "@/layouts/default";
 import {
-  Spacer,
+  Avatar,
+  Textarea,
   Input,
   Card,
   CardBody,
   CardHeader,
   Button,
-  CircularProgress,
 } from "@nextui-org/react";
-import { Textarea } from "@nextui-org/input";
 
 export default function ContactPage() {
   return (
@@ -27,24 +26,56 @@ export default function ContactPage() {
               <Button color="primary">Submit</Button>
             </CardBody>
           </Card>
-          <Card className="w-5/12">
+          <Card className="w-1/3">
             <CardHeader className="pb-0 pt-2 px-4">
-              <p className="text-lg font">Send us an email</p>
+              <p className="text-lg font">Reach out to the developpers</p>
             </CardHeader>
             <CardBody className="flex flex-col gap-4">
-              <p>Alexandre Boutot (GH links, email, avatar...)</p>
-              <p>Masataro Tatsuno (GH links, email, avatar...)</p>
+              <Card>
+                <CardBody>
+                  <div className="flex flex-row items-center justify-between">
+                    <div className="flex flex-row justify-start items-center gap-3">
+                      <Avatar />
+                      <p className="pr-3">Alexandre Boutot </p>
+                    </div>
+                    <div className="flex flex-row gap-3 pr-2">
+                      <a href="https://www.linkedin.com/in/alexandre-boutot-aa6506289/">
+                        <img src="/linkedin.png" width="21" />
+                      </a>
+                      <a href="https://github.com/TDC28">
+                        <img src="/github.png" width="21" />
+                      </a>
+                      <a href="mailto:aboutot@uwaterloo.ca">
+                        <img src="/email.png" width="21" />
+                      </a>
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <div className="flex flex-row items-center justify-between">
+                    <div className="flex flex-row justify-start items-center gap-3">
+                      <Avatar />
+                      <p className="pr-3">Masataro Tatsuno</p>
+                    </div>
+                    <div className="flex flex-row gap-3 pr-2">
+                      <a href="https://www.linkedin.com/in/alexandre-boutot-aa6506289/">
+                        <img src="/linkedin.png" width="21" />
+                      </a>
+                      <a href="https://github.com/TDC28">
+                        <img src="/github.png" width="21" />
+                      </a>
+                      <a href="mailto:mtatsuno@uwaterloo.ca">
+                        <img src="/email.png" width="21" />
+                      </a>
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
             </CardBody>
           </Card>
         </div>
-
-        <Spacer x={10} />
-        <CircularProgress
-          aria-label="Loading..."
-          size="lg"
-          color="warning"
-          showValueLabel={true}
-        />
       </div>
     </DefaultLayout>
   );
