@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
+//import { useState, useEffect } from "react";
 import DefaultLayout from "@/layouts/default";
 
 export default function IndexPage() {
-  const [animate, setAnimate] = useState(false);
+  //const [animate, setAnimate] = useState(false);
 
-  useEffect(() => {
-    setAnimate(true);
-  }, []);
+  //useEffect(() => {
+  //  setAnimate(true);
+  //}, []);
 
   return (
     <DefaultLayout>
       <div>
-        <h1 className="text-5xl pb-4 text-gray-700">
+        <h1 className="text-6xl pb-4">
           Where quantum computing meets utility.
         </h1>
-        <div className="flex flex-col space-y-6">
+        <div className="space-y-6">
           <div>
             <p className={`text-xl font-thin`}>
               Qalendar is an innovative calendar application powered by quantum

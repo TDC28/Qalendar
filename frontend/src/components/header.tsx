@@ -30,7 +30,7 @@ export default function Header() {
         </NavbarItem>
         <NavbarItem isActive={isActive("/generate")}>
           <Link color="foreground" href="/generate">
-            Generate Schedule
+            Generate Calendar
           </Link>
         </NavbarItem>
         <NavbarItem isActive={isActive("/contact")}>

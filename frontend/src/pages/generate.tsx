@@ -5,9 +5,11 @@ import { Spacer } from "@nextui-org/react";
 export default function GeneratePage() {
   return (
     <DefaultLayout>
-      <h1>This is the calendar generation page</h1>
-      <Spacer y={5} />
-      <ScheduleTable />
+      <div>
+        <h1 className="text-6xl pb-9">Generate calendar</h1>
+        <Spacer y={5} />
+        <ScheduleTable />
+      </div>
     </DefaultLayout>
   );
 }
