@@ -13,7 +13,25 @@ import { useState } from "react";
 export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [body, setBody] = useState("");
+  const [message, setMessage] = useState("");
+
+  const sendEmail = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/contact/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, message }), // Corrected 'body' to 'message'
+      });
+
+      const data = await response.json();
+      alert(data.status);
+      console.log(data);
+    } catch (error) {
+      console.log("There was an error sending your message.");
+    }
+  };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -23,8 +41,8 @@ export default function ContactPage() {
     setEmail(e.target.value);
   };
 
-  const handleBodyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBody(e.target.value);
+  const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
   };
 
   return (
@@ -51,11 +69,13 @@ export default function ContactPage() {
               />
               <Textarea
                 type="text"
-                value={body}
+                value={message}
                 label="Message body"
-                onChange={handleBodyChange}
+                onChange={handleMessageChange}
               />
-              <Button color="primary">Submit</Button>
+              <Button color="primary" onClick={sendEmail}>
+                Submit
+              </Button>
             </CardBody>
           </Card>
           <Card className="w-1/3">
