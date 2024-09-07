@@ -22,14 +22,13 @@ export default function ContactPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, message }), // Corrected 'body' to 'message'
+        body: JSON.stringify({ name, email, message }),
       });
 
       const data = await response.json();
       alert(data.status);
-      console.log(data);
     } catch (error) {
-      console.log("There was an error sending your message.");
+      alert("There was an error sending your message.");
     }
   };
 
