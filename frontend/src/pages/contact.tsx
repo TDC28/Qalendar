@@ -27,6 +27,10 @@ export default function ContactPage() {
 
       const data = await response.json();
       alert(data.status);
+
+      setName("");
+      setEmail("");
+      setMessage("");
     } catch (error) {
       alert("There was an error sending your message.");
     }
