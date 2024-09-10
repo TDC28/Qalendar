@@ -28,6 +28,11 @@ export default function Header() {
             Setup
           </Link>
         </NavbarItem>
+        <NavbarItem isActive={isActive("/event-manager")}>
+          <Link color="foreground" href="/event-manager">
+            Event Manager
+          </Link>
+        </NavbarItem>
         <NavbarItem isActive={isActive("/generate")}>
           <Link color="foreground" href="/generate">
             Generate Calendar
