@@ -17,3 +17,7 @@
 .slide-up {
   animation: slideUp 0.2s ease-out forwards;
 }
+
+.table-header {
+  @apply bg-default-100 py-3 text-gray-500 text-xs;
+}
