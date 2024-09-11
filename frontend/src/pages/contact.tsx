@@ -115,10 +115,10 @@ export default function ContactPage() {
                       <p className="pr-3">Masataro Tatsuno</p>
                     </div>
                     <div className="flex flex-row gap-3 pr-2">
-                      <a href="https://www.linkedin.com/in/alexandre-boutot-aa6506289/">
+                      <a href="https://www.linkedin.com/in/masatarotatsuno/">
                         <img src="/linkedin.png" width="21" />
                       </a>
-                      <a href="https://github.com/TDC28">
+                      <a href="https://github.com/Tatsu-Turtle">
                         <img src="/github.png" width="21" />
                       </a>
                       <a href="mailto:mtatsuno@uwaterloo.ca">

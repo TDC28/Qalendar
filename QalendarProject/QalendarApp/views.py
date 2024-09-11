@@ -1,4 +1,8 @@
 import json
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.views import View
+
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -7,7 +11,7 @@ from django.conf import settings
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from rest_framework.parsers import JSONParser
 from .models import Activity, Event
 from .serializers import EventSerializer, ActivitySerializer
 
@@ -45,25 +49,6 @@ def contact(request):
         )
 
 
-# def contacts(request):
-#     if request.method == "POST":
-#         name = request.POST.get("name")
-#         email = request.POST.get("email")
-#         message = request.POST.get("message")
-#
-#         # Compose the email
-#         subject = f"Contact Form Submission from {name}"
-#         email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
-#         recipient_list = ["aboutot@uwaterloo.ca"]  # Add the recipient email here
-#
-#         # Send the email
-#         send_mail(subject, email_message, settings.EMAIL_HOST_USER, recipient_list)
-#
-#         return render(request, "contacts.html", {"success": True})
-#
-#     return render(request, "contacts.html")
-
-
 class ActivityListCreate(generics.ListCreateAPIView):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
@@ -82,6 +67,29 @@ class EventListCreate(generics.ListCreateAPIView):
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AddEventView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        title = data.get('title')
+        day = data.get('day')
+        start_time = data.get('start_time')
+        end_time = data.get('end_time')
+
+        if not all([title, day, start_time, end_time]):
+            return JsonResponse({'error': 'All fields are required.'}, status=400)
+
+        # Create the event
+        event = Event.objects.create(
+            title=title,
+            day=day,
+            start_time=start_time,
+            end_time=end_time
+        )
+
+        return JsonResponse({'id': event.id, 'message': 'Event created successfully.'}, status=201)
 
 
 def clear_events_view(request):
@@ -169,3 +177,6 @@ def generate_schedule(request):
 
 def schedule_page(request):
     return render(request, "schedule.html")  # Render a template for the schedule page
+
+
+# Stuff added for the React frontend
