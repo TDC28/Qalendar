@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button } from "@nextui-org/react";
 
@@ -8,9 +8,11 @@ interface GenerateButtonProps {
 
 const GenerateButton: React.FC<GenerateButtonProps> = ({ onGenerate }) => {
   return (
-    <Button color="primary" onClick={onGenerate}>
-      Generate!
-    </Button>
+    <div className="pb-4">
+      <Button color="primary" onClick={onGenerate}>
+        Generate!
+      </Button>
+    </div>
   );
 };
 

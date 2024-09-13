@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DefaultLayout from "@/layouts/default";
+import GenerateButton from "@/components/generateButton";
 
 interface Row {
   time: string;
@@ -18,57 +19,105 @@ interface Block {
 interface TableData {
   MON: string[];
   TUE: string[];
+  WED: string[];
+  THU: string[];
+  FRI: string[];
+  SAT: string[];
+  SUN: string[];
 }
 
 interface StartIndeces {
   MON: number[];
   TUE: number[];
+  WED: number[];
+  THU: number[];
+  FRI: number[];
+  SAT: number[];
+  SUN: number[];
+}
+
+const DAYS: Array<keyof TableData> = [
+  "MON",
+  "TUE",
+  "WED",
+  "THU",
+  "FRI",
+  "SAT",
+  "SUN",
+];
+
+const TIMESLOTS: string[] = [];
+
+for (let i = 0; i < 24; i++) {
+  for (let j = 0; j < 4; j++) {
+    const hour = i.toString().padStart(2, "0");
+    const minutes = (j * 15).toString().padStart(2, "0");
+    TIMESLOTS.push(`${hour}:${minutes}`);
+  }
 }
 
 export default function TablePage() {
-  const timeslots: string[] = [];
+  const [blocks, setBlocks] = useState<Block[]>([]);
+  const [loading, setLoading] = useState(false);
   const [startIndeces, setStartIndeces] = useState<StartIndeces>({
     MON: [],
     TUE: [],
+    WED: [],
+    THU: [],
+    FRI: [],
+    SAT: [],
+    SUN: [],
   });
-  const [scheduleData, setScheduleData] = useState<TableData>({
-    MON: Array(96)
-      .fill("Empty")
-      .fill("Sleep", 0, 32)
-      .fill("Breakfast", 32, 36)
-      .fill("Lunch", 48, 52)
-      .fill("Dinner", 72, 76),
-    TUE: Array(96)
-      .fill("Empty")
-      .fill("Sleep2", 0, 32)
-      .fill("Breakfast2", 32, 36)
-      .fill("Lunch2", 48, 52)
-      .fill("leetcode", 72, 76),
-  });
-  const [blocks, setBlocks] = useState<Block[]>([]);
+  const [scheduleData, setScheduleData] = useState<TableData | null>(null);
 
-  for (let i = 0; i < 24; i++) {
-    for (let j = 0; j < 4; j++) {
-      const hour = i.toString().padStart(2, "0");
-      const minutes = (j * 15).toString().padStart(2, "0");
-      timeslots.push(`${hour}:${minutes}`);
+  const fetchScheduleData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/generate-schedule/",
+      );
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Fetched Schedule Data:", data.schedule);
+
+      setScheduleData(data.schedule);
+    } catch (error) {
+      console.error("Error fetching schedule data:", error);
+
+      //// Set an error message in the state to display to the user
+      //setErrorMessage('Failed to load the schedule. Please try again later.');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  const rows: Row[] = timeslots.map((timeslot) => ({
+  useEffect(() => {
+    loadTable();
+  }, [scheduleData]);
+
+  const rows: Row[] = TIMESLOTS.map((timeslot) => ({
     time: timeslot,
   }));
 
   const loadTable = () => {
+    console.log(scheduleData);
     if (!scheduleData) return;
 
     const tempBlocks: Block[] = [];
-    let newStartIndeces: { MON: number[]; TUE: number[] } = {
+    const newStartIndeces: StartIndeces = {
       MON: [],
       TUE: [],
+      WED: [],
+      THU: [],
+      FRI: [],
+      SAT: [],
+      SUN: [],
     };
 
-    for (const day of ["MON", "TUE"] as Array<keyof TableData>) {
+    for (const day of DAYS) {
       let start = 0;
       let last = scheduleData[day][0];
 
@@ -87,7 +136,6 @@ export default function TablePage() {
 
     setStartIndeces(newStartIndeces);
     setBlocks(tempBlocks);
-    console.log(newStartIndeces);
   };
 
   const rowIndexTo24Time = (rowIndex: number) => {
@@ -113,14 +161,14 @@ export default function TablePage() {
     return hoursStr + ":" + minutesStr;
   };
 
-  const getDataEntry = (rowIndex: number, day: string) => {
+  const getDataCell = (rowIndex: number, day: keyof StartIndeces) => {
     for (var block of blocks) {
       if (
         block.day === day &&
         block.contents.name === "Empty" &&
         block.contents.startRow == rowIndex
       ) {
-        return <td></td>;
+        return <td key={`${day}-${rowIndex}`}></td>;
       }
       if (block.day === day && block.contents.startRow == rowIndex) {
         return (
@@ -128,6 +176,7 @@ export default function TablePage() {
             <td
               className="bg-blue-400/90 rounded-lg align-top"
               rowSpan={block.contents.rowSpan}
+              key={`${day}-${rowIndex}`}
             >
               <div className="pl-1 pt-1 text-white text-sm font-bold">
                 {block.contents.name}
@@ -149,11 +198,11 @@ export default function TablePage() {
     <DefaultLayout>
       <div>
         <h1 className="text-6xl pb-9">Table Testing</h1>
-        <button onClick={loadTable}>Press me</button>
+        <GenerateButton onGenerate={fetchScheduleData} />
         <div className="p-4 flex flex-col shadow-small rounded-xl">
           <table className="table-fixed w-full">
             <thead>
-              <tr>
+              <tr key={"header"}>
                 <th className="table-header rounded-l-lg">Time</th>
                 <th className="table-header">Monday</th>
                 <th className="table-header">Tuesday</th>
@@ -166,12 +215,18 @@ export default function TablePage() {
             </thead>
             <tbody>
               {rows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  <td className="py-1 text-sm text-center">{row.time}</td>
-                  {startIndeces["MON"].includes(rowIndex) &&
-                    getDataEntry(rowIndex, "MON")}
-                  {startIndeces["TUE"].includes(rowIndex) &&
-                    getDataEntry(rowIndex, "TUE")}
+                <tr key={`row-${rowIndex}`}>
+                  <td
+                    key={`time-${rowIndex}`}
+                    className="py-1 text-sm text-center"
+                  >
+                    {row.time}
+                  </td>
+                  {DAYS.map(
+                    (day: keyof StartIndeces) =>
+                      startIndeces[day].includes(rowIndex) &&
+                      getDataCell(rowIndex, day),
+                  )}
                 </tr>
               ))}
             </tbody>
