@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import DefaultLayout from "@/layouts/default";
 import GenerateButton from "@/components/generateButton";
+import { Progress } from "@nextui-org/react";
 
 interface Row {
   time: string;
@@ -59,6 +60,7 @@ for (let i = 0; i < 24; i++) {
 export default function TablePage() {
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [startIndeces, setStartIndeces] = useState<StartIndeces>({
     MON: [],
     TUE: [],
@@ -72,6 +74,7 @@ export default function TablePage() {
 
   const fetchScheduleData = async () => {
     setLoading(true);
+    setErrorMessage(null);
     try {
       const response = await fetch(
         "http://127.0.0.1:8000/api/generate-schedule/",
@@ -87,8 +90,7 @@ export default function TablePage() {
     } catch (error) {
       console.error("Error fetching schedule data:", error);
 
-      //// Set an error message in the state to display to the user
-      //setErrorMessage('Failed to load the schedule. Please try again later.');
+      setErrorMessage("Failed to load the schedule. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -174,7 +176,7 @@ export default function TablePage() {
         return (
           <>
             <td
-              className="bg-blue-400/90 rounded-lg align-top"
+              className="bg-primary rounded-lg align-top"
               rowSpan={block.contents.rowSpan}
               key={`${day}-${rowIndex}`}
             >
@@ -198,40 +200,61 @@ export default function TablePage() {
     <DefaultLayout>
       <div>
         <h1 className="text-6xl pb-9">Table Testing</h1>
-        <GenerateButton onGenerate={fetchScheduleData} />
-        <div className="p-4 flex flex-col shadow-small rounded-xl">
-          <table className="table-fixed w-full">
-            <thead>
-              <tr key={"header"}>
-                <th className="table-header rounded-l-lg">Time</th>
-                <th className="table-header">Monday</th>
-                <th className="table-header">Tuesday</th>
-                <th className="table-header">Wednesday</th>
-                <th className="table-header">Thursday</th>
-                <th className="table-header">Friday</th>
-                <th className="table-header">Saturday</th>
-                <th className="table-header rounded-r-lg">Sunday</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, rowIndex) => (
-                <tr key={`row-${rowIndex}`}>
-                  <td
-                    key={`time-${rowIndex}`}
-                    className="py-1 text-sm text-center"
-                  >
-                    {row.time}
-                  </td>
-                  {DAYS.map(
-                    (day: keyof StartIndeces) =>
-                      startIndeces[day].includes(rowIndex) &&
-                      getDataCell(rowIndex, day),
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="pb-4">
+          <GenerateButton onGenerate={fetchScheduleData} />
         </div>
+
+        {errorMessage && (
+          <div style={{ color: "red", marginBottom: "20px" }}>
+            {errorMessage}
+          </div>
+        )}
+
+        {loading ? (
+          <div className="shadow-small rounded-xl max-w-64 p-4">
+            <Progress
+              aria-label="Loading schedule..."
+              size="md"
+              isIndeterminate
+              color="primary"
+              className="max-w-md"
+            />
+          </div>
+        ) : (
+          <div className="p-4 flex flex-col shadow-small rounded-xl">
+            <table className="table-fixed w-full">
+              <thead>
+                <tr key={"header"}>
+                  <th className="table-header rounded-l-lg">Time</th>
+                  <th className="table-header">Monday</th>
+                  <th className="table-header">Tuesday</th>
+                  <th className="table-header">Wednesday</th>
+                  <th className="table-header">Thursday</th>
+                  <th className="table-header">Friday</th>
+                  <th className="table-header">Saturday</th>
+                  <th className="table-header rounded-r-lg">Sunday</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, rowIndex) => (
+                  <tr key={`row-${rowIndex}`}>
+                    <td
+                      key={`time-${rowIndex}`}
+                      className="py-1 text-sm text-center"
+                    >
+                      {row.time}
+                    </td>
+                    {DAYS.map(
+                      (day: keyof StartIndeces) =>
+                        startIndeces[day].includes(rowIndex) &&
+                        getDataCell(rowIndex, day),
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </DefaultLayout>
   );

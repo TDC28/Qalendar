@@ -8,11 +8,9 @@ interface GenerateButtonProps {
 
 const GenerateButton: React.FC<GenerateButtonProps> = ({ onGenerate }) => {
   return (
-    <div className="pb-4">
-      <Button color="primary" onClick={onGenerate}>
-        Generate!
-      </Button>
-    </div>
+    <Button color="primary" onClick={onGenerate}>
+      Generate!
+    </Button>
   );
 };
 
