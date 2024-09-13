@@ -14,6 +14,7 @@ interface Block {
 
 export default function TablePage() {
   const timeslots: string[] = [];
+  const [startIndeces, setStartIndeces] = useState<number[]>([]);
   const [scheduleData, setScheduleData] = useState({
     MON: Array(96)
       .fill("Empty")
@@ -23,7 +24,6 @@ export default function TablePage() {
       .fill("Dinner", 72, 76),
   });
   const [blocks, setBlocks] = useState<Block[]>([]);
-  const [startIndeces, setStartIndeces] = useState<number[]>([]);
 
   for (let i = 0; i < 24; i++) {
     for (let j = 0; j < 4; j++) {
@@ -44,35 +44,67 @@ export default function TablePage() {
     const tempBlocks: Block[] = [];
     let start = 0;
     let last = scheduleData["MON"][0];
+    let newStartIndeces = [];
 
     for (let i = 1; i <= scheduleData["MON"].length; i++) {
       if (i === scheduleData["MON"].length || scheduleData["MON"][i] !== last) {
-        console.log("Found");
-        setStartIndeces((prevStartIndeces) => {
-          const newStartIndeces = [...prevStartIndeces, start];
-          return newStartIndeces;
-        });
-
+        newStartIndeces.push(start);
         tempBlocks.push({
           name: last,
           startRow: start,
           rowSpan: i - start,
         });
+
         start = i;
         last = scheduleData["MON"][i];
       }
     }
+    setStartIndeces(newStartIndeces);
     setBlocks(tempBlocks);
-    console.log(startIndeces);
+    console.log(newStartIndeces);
+  };
+
+  const rowIndexTo24Time = (rowIndex: number) => {
+    const totalMinutes = rowIndex * 15;
+
+    const hours = Math.floor(totalMinutes / 60);
+    let hoursStr = "";
+    const minutes = totalMinutes - hours * 60;
+    let minutesStr = "";
+
+    if (hours < 10) {
+      hoursStr = "0" + String(hours);
+    } else {
+      hoursStr = String(hours);
+    }
+
+    if (minutes < 10) {
+      minutesStr = "0" + String(minutes);
+    } else {
+      minutesStr = String(minutes);
+    }
+
+    return hoursStr + ":" + minutesStr;
   };
 
   const getDataEntry = (rowIndex: number, day: string) => {
     for (var block of blocks) {
       if (block.startRow == rowIndex) {
         return (
-          <td className="bg-blue-400 rounded-lg" rowSpan={block.rowSpan}>
-            {block.name}
-          </td>
+          <>
+            <td
+              className="bg-blue-400/90 rounded-lg align-top"
+              rowSpan={block.rowSpan}
+            >
+              <div className="pl-1 pt-1 text-white text-sm font-bold">
+                {block.name}
+              </div>
+              <div className="p-1 text-white text-sm">
+                {rowIndexTo24Time(block.startRow)} -{" "}
+                {rowIndexTo24Time(block.startRow + block.rowSpan)}
+              </div>
+            </td>
+          </>
         );
       }
     }
@@ -100,8 +132,9 @@ export default function TablePage() {
             <tbody>
               {rows.map((row, rowIndex) => (
                 <tr key={rowIndex}>
-                  <td className="text-center py-1 text-sm">{row.time}</td>
+                  <td className="py-1 text-sm">{row.time}</td>
                   {startIndeces.includes(rowIndex) &&
+                    scheduleData["MON"][rowIndex] != "Empty" &&
                     getDataEntry(rowIndex, "MON")}
                 </tr>
               ))}
