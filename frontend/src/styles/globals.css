@@ -19,5 +19,13 @@
 }
 
 .table-header {
-  @apply bg-default-100 py-3 text-gray-500 text-xs;
+  @apply rounded-lg bg-default-100 py-3 text-gray-500 text-xs;
+}
+
+table {
+  border-collapse: separate;
+}
+
+.table-data {
+  border: solid white 3px;
 }

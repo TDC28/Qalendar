@@ -176,7 +176,7 @@ export default function TablePage() {
         return (
           <>
             <td
-              className="bg-primary rounded-lg align-top"
+              className="table-data bg-primary rounded-lg align-top"
               rowSpan={block.contents.rowSpan}
               key={`${day}-${rowIndex}`}
             >
