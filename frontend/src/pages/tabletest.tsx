@@ -7,21 +7,43 @@ interface Row {
 }
 
 interface Block {
-  name: string;
-  startRow: number;
-  rowSpan: number;
+  day: string;
+  contents: {
+    name: string;
+    startRow: number;
+    rowSpan: number;
+  };
+}
+
+interface TableData {
+  MON: string[];
+  TUE: string[];
+}
+
+interface StartIndeces {
+  MON: number[];
+  TUE: number[];
 }
 
 export default function TablePage() {
   const timeslots: string[] = [];
-  const [startIndeces, setStartIndeces] = useState<number[]>([]);
-  const [scheduleData, setScheduleData] = useState({
+  const [startIndeces, setStartIndeces] = useState<StartIndeces>({
+    MON: [],
+    TUE: [],
+  });
+  const [scheduleData, setScheduleData] = useState<TableData>({
     MON: Array(96)
       .fill("Empty")
       .fill("Sleep", 0, 32)
       .fill("Breakfast", 32, 36)
       .fill("Lunch", 48, 52)
       .fill("Dinner", 72, 76),
+    TUE: Array(96)
+      .fill("Empty")
+      .fill("Sleep2", 0, 32)
+      .fill("Breakfast2", 32, 36)
+      .fill("Lunch2", 48, 52)
+      .fill("leetcode", 72, 76),
   });
   const [blocks, setBlocks] = useState<Block[]>([]);
 
@@ -39,26 +61,30 @@ export default function TablePage() {
 
   const loadTable = () => {
     if (!scheduleData) return;
-    console.log();
 
     const tempBlocks: Block[] = [];
-    let start = 0;
-    let last = scheduleData["MON"][0];
-    let newStartIndeces = [];
+    let newStartIndeces: { MON: number[]; TUE: number[] } = {
+      MON: [],
+      TUE: [],
+    };
 
-    for (let i = 1; i <= scheduleData["MON"].length; i++) {
-      if (i === scheduleData["MON"].length || scheduleData["MON"][i] !== last) {
-        newStartIndeces.push(start);
-        tempBlocks.push({
-          name: last,
-          startRow: start,
-          rowSpan: i - start,
-        });
+    for (const day of ["MON", "TUE"] as Array<keyof TableData>) {
+      let start = 0;
+      let last = scheduleData[day][0];
 
-        start = i;
-        last = scheduleData["MON"][i];
+      for (let i = 1; i <= scheduleData[day].length; i++) {
+        if (i === scheduleData[day].length || scheduleData[day][i] !== last) {
+          newStartIndeces[day].push(start);
+          tempBlocks.push({
+            day: day,
+            contents: { name: last, startRow: start, rowSpan: i - start },
+          });
+          start = i;
+          last = scheduleData[day][i];
+        }
       }
     }
+
     setStartIndeces(newStartIndeces);
     setBlocks(tempBlocks);
     console.log(newStartIndeces);
@@ -89,19 +115,28 @@ export default function TablePage() {
 
   const getDataEntry = (rowIndex: number, day: string) => {
     for (var block of blocks) {
-      if (block.startRow == rowIndex) {
+      if (
+        block.day === day &&
+        block.contents.name === "Empty" &&
+        block.contents.startRow == rowIndex
+      ) {
+        return <td></td>;
+      }
+      if (block.day === day && block.contents.startRow == rowIndex) {
         return (
           <>
             <td
               className="bg-blue-400/90 rounded-lg align-top"
-              rowSpan={block.rowSpan}
+              rowSpan={block.contents.rowSpan}
             >
               <div className="pl-1 pt-1 text-white text-sm font-bold">
-                {block.name}
+                {block.contents.name}
               </div>
               <div className="p-1 text-white text-sm">
-                {rowIndexTo24Time(block.startRow)} -{" "}
-                {rowIndexTo24Time(block.startRow + block.rowSpan)}
+                {rowIndexTo24Time(block.contents.startRow)} -{" "}
+                {rowIndexTo24Time(
+                  block.contents.startRow + block.contents.rowSpan,
+                )}
               </div>
             </td>
           </>
@@ -132,10 +167,11 @@ export default function TablePage() {
             <tbody>
               {rows.map((row, rowIndex) => (
                 <tr key={rowIndex}>
-                  <td className="py-1 text-sm">{row.time}</td>
-                  {startIndeces.includes(rowIndex) &&
-                    scheduleData["MON"][rowIndex] != "Empty" &&
+                  <td className="py-1 text-sm text-center">{row.time}</td>
+                  {startIndeces["MON"].includes(rowIndex) &&
                     getDataEntry(rowIndex, "MON")}
+                  {startIndeces["TUE"].includes(rowIndex) &&
+                    getDataEntry(rowIndex, "TUE")}
                 </tr>
               ))}
             </tbody>
