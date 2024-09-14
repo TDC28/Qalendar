@@ -61,6 +61,7 @@ export default function TablePage() {
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [scheduleData, setScheduleData] = useState<TableData | null>(null);
   const [startIndeces, setStartIndeces] = useState<StartIndeces>({
     MON: [],
     TUE: [],
@@ -70,7 +71,9 @@ export default function TablePage() {
     SAT: [],
     SUN: [],
   });
-  const [scheduleData, setScheduleData] = useState<TableData | null>(null);
+  const rows: Row[] = TIMESLOTS.map((timeslot) => ({
+    time: timeslot,
+  }));
 
   const fetchScheduleData = async () => {
     setLoading(true);
@@ -99,10 +102,6 @@ export default function TablePage() {
   useEffect(() => {
     loadTable();
   }, [scheduleData]);
-
-  const rows: Row[] = TIMESLOTS.map((timeslot) => ({
-    time: timeslot,
-  }));
 
   const loadTable = () => {
     console.log(scheduleData);
@@ -164,7 +163,7 @@ export default function TablePage() {
   };
 
   const getDataCell = (rowIndex: number, day: keyof StartIndeces) => {
-    for (var block of blocks) {
+    for (const block of blocks) {
       if (
         block.day === day &&
         block.contents.name === "Empty" &&
