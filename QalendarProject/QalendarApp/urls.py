@@ -26,7 +26,7 @@ urlpatterns = [
     # path("generate_schedule/", generate_schedule_view, name="generate_schedule_view"),
     path("clear_events/", views.clear_events_view, name="clear-events"),
     path("clear_activities/", views.clear_activities_view, name="clear-activities"),
-    path("generate-schedule/", views.generate_schedule, name="generate-schedule"),
+    path("api/generate-schedule/", views.generate_schedule, name="generate-schedule"),
 
 
     # Stuff added for the React frontend
