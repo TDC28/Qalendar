@@ -138,6 +138,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "QalendarApp", "static")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# CORS_ALLOWED_ORIGINS = True   # for development purposes only
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
