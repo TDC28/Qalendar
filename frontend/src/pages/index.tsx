@@ -20,7 +20,7 @@ export default function IndexPage() {
             <div>
               <p className="text-3xl font-thin">
                 Qalendar is an innovative calendar application powered by
-                quantum computation.
+                quantum annealing.
               </p>
               <p className="text-3xl font-thin">
                 It is designed to help you optimize your schedule efficiently
@@ -28,7 +28,7 @@ export default function IndexPage() {
               </p>
             </div>
           </div>
-          <div className="flex items-center justify-around mt-8">
+          <div className="flex items-center justify-around mt-16">
             <div className="self-center bg-gradient-to-r from-blue-400 to-purple-400 inline-block p-1 rounded-2xl">
               <Button
                 className="bg-white shadow shadow-black"
@@ -40,6 +40,33 @@ export default function IndexPage() {
               </Button>
             </div>
           </div>
+        </div>
+        <div className="flex justify-around mt-24">
+          <a
+            href="https://github.com/TDC28/Qalendar"
+            target="_blank"
+            className="bg-gray-300 w-1/3 rounded-xl bg-opacity-25 bg-blur border shadow hover:bg-gray-200 hover:bg-opacity-20 transition duration-200"
+          >
+            <div className="flex items-center justify-between">
+              <p className="p-3 text-4xl">Open sourced</p>
+            </div>
+            <p className="p-3">
+              Visit our GitHub repository. We are open to pull requests and
+              contributions.
+            </p>
+          </a>
+          <a
+            href="/contact"
+            className="bg-gray-300 w-1/3 rounded-xl bg-opacity-25 bg-blur border shadow hover:bg-gray-200 hover:bg-opacity-20 transition duration-200"
+          >
+            <div className="flex items-center justify-between">
+              <p className="p-3 text-4xl">Contact us</p>
+            </div>
+            <p className="p-3">
+              We would love to hear your feedback! We're always ready to improve
+              Qalendar.
+            </p>
+          </a>
         </div>
       </DefaultLayout>
     </>

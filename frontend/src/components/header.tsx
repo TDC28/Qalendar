@@ -23,11 +23,6 @@ export default function Header() {
             Home
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={isActive("/setup")}>
-          <Link color="foreground" href="/setup">
-            Setup
-          </Link>
-        </NavbarItem>
         <NavbarItem isActive={isActive("/event-manager")}>
           <Link color="foreground" href="/event-manager">
             Event Manager
