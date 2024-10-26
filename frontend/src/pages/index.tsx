@@ -1,5 +1,6 @@
 //import { useState, useEffect } from "react";
 import DefaultLayout from "@/layouts/default";
+import Decoration from "@/components/Decoration";
 
 export default function IndexPage() {
   //const [animate, setAnimate] = useState(false);
@@ -14,17 +15,18 @@ export default function IndexPage() {
         <h1 className="text-6xl pb-4">
           Where quantum computing meets utility.
         </h1>
-        <div className="space-y-16">
+        <div className="space-y-24">
           <div>
-            <p className={`text-xl font-thin`}>
+            <p className="text-2xl font-thin">
               Qalendar is an innovative calendar application powered by quantum
               computation.
             </p>
-            <p className="text-xl font-thin">
+            <p className="text-2xl font-thin">
               It is designed to help you optimize your schedule efficiently and
               effectively.
             </p>
           </div>
+          <Decoration />
           <div className="flex flex-col m-auto rounded-xl shadow-small w-5/6 p-4">
             <p className="text-4xl text-center font-bold">
               Create the

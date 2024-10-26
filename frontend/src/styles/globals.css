@@ -26,6 +26,17 @@ table {
   border-collapse: separate;
 }
 
+.decoration {
+  position: absolute;
+  top: 0;
+  width: 450px;
+  height: 450px;
+  background-image: url("/decoration.svg");
+  background-size: contain;
+  background-position: center;
+  z-index: -1;
+}
+
 /*.table-data {*/
 /*  border: solid lightblue 1px;*/
 /*}*/
