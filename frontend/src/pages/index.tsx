@@ -3,8 +3,11 @@ import DefaultLayout from "@/layouts/default";
 import Decoration from "@/components/Decoration";
 import { Button } from "@nextui-org/button";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function IndexPage() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Decoration />
@@ -24,15 +27,18 @@ export default function IndexPage() {
                 and effectively.
               </p>
             </div>
-            <Button size="lg">
-              <a href="/generate" className="flex items-center">
+          </div>
+          <div className="flex items-center justify-around mt-8">
+            <div className="self-center bg-gradient-to-r from-blue-400 to-purple-400 inline-block p-1 rounded-2xl">
+              <Button
+                className="bg-white shadow shadow-black"
+                size="lg"
+                onClick={() => navigate("/generate")}
+              >
                 Get started
-                <ArrowRight
-                  className="ml-2 h-4 w-4 sm:text-sm"
-                  href="/generate"
-                />
-              </a>
-            </Button>
+                <ArrowRight className="ml-2 h-4 w-4 sm:text-sm" />
+              </Button>
+            </div>
           </div>
         </div>
       </DefaultLayout>
