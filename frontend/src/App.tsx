@@ -12,7 +12,7 @@ function App() {
     <Routes>
       <Route element={<IndexPage />} path="/" />
       <Route element={<ContactPage />} path="/contact" />
-      <Route element={<GeneratePage />} path="/generate" />
+      <Route element={<TablePage />} path="/generate" />
       <Route element={<EventManagerPage />} path="/event-manager" />
       <Route element={<SetupPage />} path="/setup" />
       <Route element={<TablePage />} path="/table" />

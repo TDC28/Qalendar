@@ -197,64 +197,60 @@ export default function TablePage() {
 
   return (
     <DefaultLayout>
-      <div>
-        <h1 className="text-6xl pb-9">Table Testing</h1>
-        <div className="pb-4">
-          <GenerateButton onGenerate={fetchScheduleData} />
-        </div>
-
-        {errorMessage && (
-          <div style={{ color: "red", marginBottom: "20px" }}>
-            {errorMessage}
-          </div>
-        )}
-
-        {loading ? (
-          <div className="shadow-small rounded-xl max-w-64 p-4">
-            <Progress
-              aria-label="Loading schedule..."
-              size="md"
-              isIndeterminate
-              color="primary"
-              className="max-w-md"
-            />
-          </div>
-        ) : (
-          <div className="p-4 flex flex-col shadow-small rounded-xl">
-            <table className="table-fixed w-full">
-              <thead>
-                <tr key={"header"}>
-                  <th className="table-header rounded-l-lg">Time</th>
-                  <th className="table-header">Monday</th>
-                  <th className="table-header">Tuesday</th>
-                  <th className="table-header">Wednesday</th>
-                  <th className="table-header">Thursday</th>
-                  <th className="table-header">Friday</th>
-                  <th className="table-header">Saturday</th>
-                  <th className="table-header rounded-r-lg">Sunday</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row, rowIndex) => (
-                  <tr key={`row-${rowIndex}`}>
-                    <td
-                      key={`time-${rowIndex}`}
-                      className="py-1 text-sm text-center"
-                    >
-                      {row.time}
-                    </td>
-                    {DAYS.map(
-                      (day: keyof StartIndeces) =>
-                        startIndeces[day].includes(rowIndex) &&
-                        getDataCell(rowIndex, day),
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      <h1 className="text-6xl pb-9">Generate calendar</h1>
+      <div className="pb-4">
+        <GenerateButton onGenerate={fetchScheduleData} />
       </div>
+
+      {errorMessage && (
+        <div style={{ color: "red", marginBottom: "20px" }}>{errorMessage}</div>
+      )}
+
+      {loading ? (
+        <div className="shadow-small rounded-xl max-w-64 p-4">
+          <Progress
+            aria-label="Loading schedule..."
+            size="md"
+            isIndeterminate
+            color="primary"
+            className="max-w-md"
+          />
+        </div>
+      ) : (
+        <div className="p-4 flex flex-col shadow-small rounded-xl">
+          <table className="table-fixed w-full">
+            <thead>
+              <tr key={"header"}>
+                <th className="table-header rounded-l-lg">Time</th>
+                <th className="table-header">Monday</th>
+                <th className="table-header">Tuesday</th>
+                <th className="table-header">Wednesday</th>
+                <th className="table-header">Thursday</th>
+                <th className="table-header">Friday</th>
+                <th className="table-header">Saturday</th>
+                <th className="table-header rounded-r-lg">Sunday</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, rowIndex) => (
+                <tr key={`row-${rowIndex}`}>
+                  <td
+                    key={`time-${rowIndex}`}
+                    className="py-1 text-sm text-center"
+                  >
+                    {row.time}
+                  </td>
+                  {DAYS.map(
+                    (day: keyof StartIndeces) =>
+                      startIndeces[day].includes(rowIndex) &&
+                      getDataCell(rowIndex, day),
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </DefaultLayout>
   );
 }

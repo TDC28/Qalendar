@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import DefaultLayout from "@/layouts/default";
 import { Input, Button } from "@nextui-org/react";
-import { Tabs, Tab} from "@nextui-org/react";
-import EventsTab from '../components/EventsTab';
-import ActivitiesTab from '../components/ActivitiesTab';
-
+import { Tabs, Tab } from "@nextui-org/react";
+import EventsTab from "../components/EventsTab";
+import ActivitiesTab from "../components/ActivitiesTab";
 
 // const [activeTab, setActiveTab] = useState("events");
 
@@ -57,7 +56,7 @@ import ActivitiesTab from '../components/ActivitiesTab';
 //     <DefaultLayout>
 //       <div>
 //         <h1 className="text-6xl pb-9">Event Manager</h1>
-        
+
 //         {/* Form for adding new events */}
 //         <form onSubmit={handleSubmit}>
 //           <div className="mb-4">
@@ -109,14 +108,12 @@ import ActivitiesTab from '../components/ActivitiesTab';
 //   );
 // }
 
-
-
 export default function EventManagerPage() {
   const [activeTab, setActiveTab] = useState<string>("events");
 
   return (
     <DefaultLayout>
-      <h1 className="text-6xl pb-9">Calendar Manager</h1>
+      <h1 className="text-6xl pb-9">Calendar manager</h1>
       <div className="mb-4">
         <Tabs
           variant="underlined"
@@ -134,4 +131,3 @@ export default function EventManagerPage() {
     </DefaultLayout>
   );
 }
-
