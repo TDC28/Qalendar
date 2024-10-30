@@ -32,7 +32,7 @@ cd QalendarProject
 pip install -r requirements.txt
 ```
 
-Setup D-Wave Ocean
+Setup D-Wave Ocean (a D-Wave account is required).
 ```bash
 dwave setup --auth
 dwave auth login
