@@ -77,7 +77,7 @@ class Qalendar:
                     if choices[preference][0] <= time < choices[preference][1]:
                         obj += -self.variables[(f"{day}_{time}", activity_id)]
 
-        # 110, 011, 111 patterns preferred NOTE: This works, but disabled for now
+        # 110, 011, 111 patterns preferred
         for day in range(7):
             for time in self[day].get_available_timeslots():
                 ntime = self.get_next_time(time)
