@@ -2,10 +2,9 @@ import { Route, Routes } from "react-router-dom";
 
 import IndexPage from "@/pages/index";
 import ContactPage from "@/pages/contact";
-import GeneratePage from "@/pages/generate";
 import SetupPage from "@/pages/setup";
 import EventManagerPage from "./pages/event-manager";
-import TablePage from "./pages/tabletest";
+import TablePage from "./pages/generate";
 
 function App() {
   return (
